@@ -53,6 +53,42 @@ app.post('/find_counselors_location', async (req, res) => {
   }
 });
 
+app.post('/find_mental_health_facilities', async (req, res) => {
+  const { latitude, longitude } = req.body;
+  console.log("Latitude: " + latitude + " Longitude: " + longitude);
+
+  try {
+    // Initialize Google Maps Places API client
+    const client = new Client({});
+
+    // Make a Places API request to find nearby places
+    const response = await client.placesNearby({
+      params: {
+        location: `${latitude},${longitude}`,
+        radius: 8000,  // 5km radius
+        type: 'health',
+        keyword: 'mental health facility',
+        key: process.env.GOOGLE_MAPS_API_KEY,
+      },
+    });
+
+    // Extract relevant data from API response
+    const mentalHealthFacilities = response.data.results.map(place => ({
+      name: place.name,
+      address: place.vicinity,
+      rating: place.rating || 'N/A',
+    }));
+
+    console.log('Mental Health Facilities:', mentalHealthFacilities);
+    
+    // Return the list of mental health facilities as JSON
+    res.json({ mentalHealthFacilities });
+  } catch (error) {
+    console.error('Error finding mental health facilities:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 
 // Starting the server
