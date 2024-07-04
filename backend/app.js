@@ -11,10 +11,9 @@ const { Client } = require('@googlemaps/google-maps-services-js');
 app.use(express.static(path.join(__dirname, '..', 'app', 'public')));
 
 // Route for serving the index.html file
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'app', 'public', 'index.html'));
-});
-
+app.get('/mental_health_locations', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'app', 'public', 'mental_health_locations.html'));
+})
 
 
 app.post('/find_counselors_location', async (req, res) => {
