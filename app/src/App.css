@@ -1,5 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 1.1vw;
+  background: #f6fff8;
+}
+
 .App {
   text-align: center;
+}
+
+.our-mission {
+  margin-top: 20vh;
+  display: flex;
+  justify-content: space-evenly;
+  height: 50vh;
+}
+
+.mission-image {
+  width: 20vw;
+  height: 40vh;
+  object-fit: cover; /* Prevents the image from losing aspect ratio/going out of proportion when window size changes */
+  overflow: visible; /* Allows the whole icon to be seen even when it's bigger than the container */
+}
+
+.mission-msg {
+  width: 20vw;
+  height: 40vh;
 }
 
 .App-logo {
@@ -28,11 +55,45 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.nav-bar {
+  height: 12vh;
+  width: 100vw;
+  display: flex;
+  gap: 20vw;
+  justify-content: space-around;
+  align-items: center;
+  padding-right: 2vw;
+  box-sizing: border-box; /* To prevent the box from getting bigger due to padding inside. */
+  position: fixed;
+  top: 0; /* To fix the nav bar position to the top of the page */
+  z-index: 1; /* To overlap the main content of the page */
+  background: #a4c3b2;
+}
+
+.options {
+  display: flex;
+  gap: 1vw;
+}
+
+.purpose {
+  display: flex;
+  justify-content: space-evenly;
+  height: 50vh;
+}
+
+.purpose-msg {
+  width: 20vw;
+  height: 40vh;
+}
+
+.purpose-image {
+  width: 20vw;
+  height: 40vh;
+  object-fit: cover; /* Prevents the image from losing aspect ratio/going out of proportion when window size changes */
+  overflow: visible; /* Allows the whole icon to be seen even when it's bigger than the container */
+}
+
+.logo {
+  height: 18vh;
+  margin-top: 2vh;
 }
