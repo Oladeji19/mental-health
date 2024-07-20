@@ -97,3 +97,26 @@ body {
   height: 18vh;
   margin-top: 2vh;
 }
+
+.vc-room {
+  padding-top: 12vh;
+  width: 100vw;
+  text-align: center;
+  font-size: 30px;
+}
+
+p {
+  font-size: 20px;
+  text-align: center;
+}
+
+label {
+  font-size: 20px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: center;
+}
