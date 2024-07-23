@@ -3,7 +3,7 @@ How To Run Frontend:
 2. Delete the node_modules folder.
 3. Run the npm install command.
 4. Run the npm audit fix --force command.
-5. cd into the "app" folder, and enter "npm start".
+5. Enter "npm start".
 
 How to Run Backend:
 1. cd int backend
