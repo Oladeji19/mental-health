@@ -19,25 +19,9 @@ function Mindfulness() {
         <input type="text" /><br></br>
         {/* Labeling the feelings */}
         <label className="feelings">How are you feeling?</label>
-        {/* Dropdown of all the possible feelings */}
-        <select id="myDropdown">
-          <option>Unhappy</option>
-          <option>Fear</option>
-          <option>Jealous</option>
-          <option>Boredom</option>
-          <option>Embarrassed</option>
-        </select>
-        <br></br>
+        <input type="text" /><br></br>
         <label className="reason">Reason</label>
-        <select id="reason">
-          <option>Worldwide Issues</option>
-          <option>Work Issues</option>
-          <option>Relationship Issues</option>
-          <option>Family Issues</option>
-          <option>Other</option>
-        </select>
-        <br></br>
-        {/*Add more dropdowns for other feelings as needed*/}
+        <input type="text" /><br></br>
 
         {/*Allows you to type whatever is needed to be typed.*/}
         <label>Type anything you want here.</label>
