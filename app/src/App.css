@@ -120,3 +120,65 @@ label {
   width: 100vw;
   align-items: center;
 }
+
+.captchabackground {
+   padding-top: 12vh;
+}
+
+#buttons {
+  justify-content: center;
+}
+
+.form-input {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.remember-forgot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.register {
+  text-align: center;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 96px;
+}
+
+#submitButton {
+  font-size: 0.18em;
+}
+
+#refreshButton {
+  margin-left: 180px;
+  font-size: 0.18em;
+}
+
+.journal {
+  padding-top: 12vh;
+  text-align: center;
+}
+
+.array-thoughts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.thought {
+  background-color: white;
+  border: 1px solid black;
+  margin-top: 18px;
+  width: 20vw;
+  height: 15vh;
+}
