@@ -4,6 +4,7 @@ import Mindfulness from "./Mindfulness.js";
 import Activities from "./Activities.js";
 import Login from "./Login.js";
 import Suggestions from "./Suggestions.js";
+import Journal from "./Journal.js";
 import { useState } from "react";
 import logo from "./assets/mindful-logo.png";
 
@@ -30,6 +31,9 @@ function NavBar() {
   const suggestionsPage = () => {
     setPage({ ...page, data: <Suggestions /> });
   };
+  const journalPage = () => {
+    setPage({ ...page, data: <Journal /> });
+  }
   return (
     <>
       <div className="nav-bar">
@@ -43,6 +47,8 @@ function NavBar() {
           </div>
           {/* Directed to activities page when activities is clicked. */}
           <div className="activities" onClick={activitiesPage}>Activities</div>
+          {/* Directed to journal page when journal is clicked. */}
+          <div className="journal-button" onClick={journalPage}>Journal</div>
           {/* Directed to suggestions page when suggestions is clicked. */}
           <div className="suggestions" onClick={suggestionsPage}>Suggestions</div>
           {/* Directed to login page when login is clicked. */}
