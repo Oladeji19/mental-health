@@ -1,6 +1,13 @@
 import "./App.css";
+import { useState } from "react";
 
 function Mindfulness() {
+  {/* Create the state variables for all of the given input. */}
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [selectedFeeling, setSelectedFeeling] = useState("");
+  const [reason, setReason] = useState("");
+  const [anything, setAnything] = useState("");
   return (
     <>
       <h1 className="vc-room">Venting Chat Room</h1>
@@ -13,19 +20,31 @@ function Mindfulness() {
       <form className="details">
         {/* Labeling the name */}
         <label className="name">Name</label>
-        <input type="text" /><br></br>
+        <input type="text" value={name}/>
+        <br></br>
         {/* Labeling the date */}
         <label className="date">Date</label>
-        <input type="text" /><br></br>
+        <input type="text" value={date}/><br></br>
         {/* Labeling the feelings */}
         <label className="feelings">How are you feeling?</label>
-        <input type="text" /><br></br>
+        <select id="feelings" value={selectedFeeling}>
+           <option>Sad</option>
+           <option>Angry</option>
+           <option>Fear</option>
+           <option>Envy</option>
+           <option>Anxiety</option>
+           <option>Bored</option>
+           <option>Disgust</option>
+           <option>Embarrassment</option>
+           <option>Other</option>
+        </select><br></br>
+        {/* Labeling the reason. */}
         <label className="reason">Reason</label>
-        <input type="text" /><br></br>
+        <input type="text" value={reason}/><br></br>
 
         {/*Allows you to type whatever is needed to be typed.*/}
         <label>Type anything you want here.</label>
-        <textarea></textarea>
+        <textarea value={anything}></textarea>
         <br></br>
         {/*Uses button for submission*/}
         <button>Submit</button>
