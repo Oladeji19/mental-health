@@ -19,10 +19,6 @@ function NavBar() {
   const homePage = () => {
     setPage({...page, data: <Home />});
   }
-  {/* Directed to the activities page */}
-  const activitiesPage = () => {
-    setPage({ ...page, data: <Activities /> });
-  };
   {/* Directed to the login page */}
   const loginPage = () => {
     setPage({...page, data: <Login />});
@@ -31,6 +27,7 @@ function NavBar() {
   const suggestionsPage = () => {
     setPage({ ...page, data: <Suggestions /> });
   };
+  {/* Directed to the journal page */}
   const journalPage = () => {
     setPage({ ...page, data: <Journal /> });
   }
@@ -45,8 +42,6 @@ function NavBar() {
           <div className="mindfulness" onClick={mindfulnessPage}>
             Mindfulness
           </div>
-          {/* Directed to activities page when activities is clicked. */}
-          <div className="activities" onClick={activitiesPage}>Activities</div>
           {/* Directed to journal page when journal is clicked. */}
           <div className="journal-button" onClick={journalPage}>Journal</div>
           {/* Directed to suggestions page when suggestions is clicked. */}
