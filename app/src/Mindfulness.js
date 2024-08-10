@@ -8,6 +8,12 @@ function Mindfulness() {
   const [selectedFeeling, setSelectedFeeling] = useState("");
   const [reason, setReason] = useState("");
   const [anything, setAnything] = useState("");
+  const [showInput, setShowInput] = useState(false);
+  const [additionalFeeling, setAdditionalFeeling] = useState("");
+  {/* Makes the input text for other emotions visible */}
+  const handleOptionChange = (event) => {
+    setShowInput(event.target.value === "Other");
+  };
   return (
     <>
       <h1 className="vc-room">Venting Chat Room</h1>
@@ -27,7 +33,7 @@ function Mindfulness() {
         <input type="text" value={date}/><br></br>
         {/* Labeling the feelings */}
         <label className="feelings">How are you feeling?</label>
-        <select id="feelings" value={selectedFeeling}>
+        <select id="feelings" value={selectedFeeling} onChange={handleOptionChange}>
            <option>Sad</option>
            <option>Angry</option>
            <option>Fear</option>
@@ -38,6 +44,18 @@ function Mindfulness() {
            <option>Embarrassment</option>
            <option>Other</option>
         </select><br></br>
+
+        {showInput && (
+           <div>
+              <label htmlFor="additionalFeeling">Enter the other feeling:</label>
+              <br></br>
+              <input
+                  type="text"
+                  id="additionalFeeling"
+                  value={additionalFeeling}
+              />
+           </div>
+        )}
         {/* Labeling the reason. */}
         <label className="reason">Reason</label>
         <input type="text" value={reason}/><br></br>
