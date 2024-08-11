@@ -3,9 +3,21 @@ from aem import app
 from flask import Blueprint, request, jsonify
 from database_setup import create_connection
 import bcrypt
-
+import smtplib
+import random
+from flask_mail import Mail, Message 
+from datetime import datetime, timedelta
 # Create a blueprint for the registration and login routes
 registration_and_login = Blueprint('auth', __name__)
+
+registration_and_login.config['MAIL_SERVER'] = 'stmp.gmail.com'
+registration_and_login.config['MAIL_PORT'] = 587
+registration_and_login.config['MAIL_USERNAME'] = 'EMAILADDRESSTOSENDFROM' #NEEDS TO BE SPECIFIED
+registration_and_login.config['MAIL_PASSWORD'] = 'PASSWORD' #NEEDS TO BE SPECIFIED
+registration_and_login.config['MAIL_USE_TLS'] = 'False'
+registration_and_login.config['MAIL_USE_SSL'] = 'True'
+mail = Mail(registration_and_login)
+
 
 # Helper function to hash a password
 def hash_password(password):
@@ -208,3 +220,146 @@ def logout():
 
 
 
+
+#Two factor authentication
+
+
+
+
+
+#In front-end, option will exist to remove two factor only if two factor is enabled
+@registration_and_login("/two-factor/remove_two_factor", methods = ['POST'])
+def create_two_factor():
+    username = request.json['username']
+    type_of_user = request.json['user_type'] #MUST BE either 'user' or 'listener' as spelled
+    conn = create_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            f'''
+                    UPDATE {type_of_user} SET has_2_factor = 0 WHERE username = {username} 
+            ''')
+        conn.commit()
+        return jsonify({"message": "two-factor disabled"}),202
+    except sqlite3.Error as error:
+        return jsonify({"error":str(error)}),500
+    finally:
+        conn.close()
+
+
+
+
+#add two factor
+@registration_and_login("/two-factor/add_two_factor", methods = ['POST'])
+def create_two_factor():
+    username = request.json['username']
+    type_of_user = request.json['user_type'] #MUST BE either 'user' or 'listener' as spelled
+    conn = create_connection()
+    cursor = conn.cursor()
+    try:
+            cursor.execute(
+                f'''
+                        UPDATE {type_of_user} SET has_2_factor = 1 WHERE username = {username} 
+                '''
+            )
+            conn.commit()
+            return jsonify({"message": "two-factor enabled"}),202
+    except sqlite3.Error as error:
+        return jsonify({"error":str(error)}),500
+    finally:
+        conn.close()
+
+
+
+#get 2-factor code
+@registration_and_login.route("/2-factor/get_code",methods = ['POST'])
+def two_factor():
+    username = request.json['username']
+    type_of_user = request.json['user_type'] #MUST BE either 'user' or 'listener' as spelled
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            f'''
+                SELECT email FROM {type_of_user} WHERE username = {username} 
+            '''
+        )
+    except sqlite3.Error as error:
+        conn.close()
+        return jsonify({"error":str(error)}),500
+    
+    #send email
+    email = cursor.fetchone()
+    message = Message(subject="Verification Code:", recipients=[email[0]], sender = 'EMAILADDRESSTOSENDFROM') #*NEED TO SPECIFY EMAIL
+    otp = random(10000,99999) #Generate code
+    message.body = f"You verification code is: {otp}"
+    mail.send(message)
+    cursor.execute(f'''
+        SELECT * current_verification_requests WHERE username = {username} AND user_type = {type_of_user}
+    ''')
+    if(len(cursor.fetchall()) != 0):
+        cursor.execute(f'''
+            DELETE from current_verification_requests WHERE username = {username} AND user_type = {type_of_user}
+        ''')
+        conn.commit()
+        
+    try:
+        cursor.execute(
+                f'''
+                    INSERT INTO current_verification_requests(username, code_sent, time_sent, user_type) VALUES ({username},{otp},{repr(val = ([(datetime.now().year), (datetime.now().month), (datetime.now().day), (datetime.now().hour), (datetime.now().minute), (datetime.now().second), (datetime.now().microsecond)]))},{type_of_user})
+                ''')
+        conn.commit()
+        return jsonify({"message": "email sent to user"}),200
+    except sqlite3.Error as error:
+        return jsonify({"error":str(error)}),500
+    finally:
+        conn.close()
+
+
+
+#approve code
+@registration_and_login.route("/2-factor/approve_code",methods = ['POST'])
+def two_factor():
+    username = request.json['username']
+    type_of_user = request.json['user_type']
+    code_entered = int(request.json['code_entered'])
+    conn = create_connection()
+    cursor = conn.cursor()
+    try:
+            cursor.execute(
+                f'''
+                    SELECT code_sent,time_sent FROM current_verification_requests WHERE username = {username} AND user_type = {type_of_user}         
+                ''')
+            codes = cursor.fetchone()
+            code = codes[0]
+            time = eval(codes[1])
+            time_sent = datetime.datetime(*time)
+            cur_time = datetime.now()
+            time_diff = (cur_time - time_sent)
+            if(time_diff.seconds > 60):
+                return jsonify({"error":"Too late to enter code"}), 401
+            elif code_entered != codes[0]:
+                return jsonify({"error":"Incorrect code, try again"}), 401
+            else:
+                if(type_of_user == 'listener'):
+                    cursor.execute(
+                        f'''UPDATE listener SET availability = 'available' WHERE username = {username}'''
+                    )
+                    conn.commit()
+                return jsonify({"message":"correct! Can enter"}), 200
+    except sqlite3.Error as error:
+        return jsonify({"error":str(error)}),500
+    finally:
+        try:
+            cursor.execute(
+                    f'''
+                        DELETE from current_verification_requests WHERE username = {username} AND user_type = {type_of_user}         
+                    ''')
+            conn.commit()
+        except sqlite3.Error as error:
+            return jsonify({"error":str(error)}),500
+        except Exception as e:
+            return jsonify({"error":str(e)}),500
+        finally:
+            conn.close()
