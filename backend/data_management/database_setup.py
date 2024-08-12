@@ -18,9 +18,9 @@ def create_tables():
                         code_sent INTEGER,
                         time_sent TEXT,
                         user_type TEXT
-        
         )
         ''')
+        
         # Create the problem table
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS problem (
@@ -38,7 +38,7 @@ def create_tables():
             password TEXT NOT NULL,
             language TEXT NOT NULL,
             experience_level TEXT NOT NULL,
-            availability TEXT DEFAULT 'unavailable'
+            availability TEXT DEFAULT 'unavailable',
             has_2_factor INTEGER DEFAULT 0
         )
         ''')
@@ -60,7 +60,7 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT NOT NULL UNIQUE,
             username TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
             has_2_factor INTEGER DEFAULT 0
         )
         ''')

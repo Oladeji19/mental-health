@@ -2,20 +2,42 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const axios = require('axios');
-const app = express();
-require('dotenv').config();
-const port = 3000;
-
-app.use(bodyParser.json());
+const dotenv = require('dotenv');
 const { Client } = require('@googlemaps/google-maps-services-js');
 
-// Serving static files from the 'public' directory
+// Load environment variables from .env file
+dotenv.config();
+
+// Initialize the Express app
+const app = express();
+
+// Middleware
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '..', 'app', 'public')));
 
-// Route for serving the index.html file
-app.get('/mental_health_locations', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'app', 'public', 'mental_health_locations.html'));
-});
+// Initialize cache for quotes
+const cache = new Map();
+const CACHE_DURATION = 3600000; // 1 hour in milliseconds
+
+// Helper function to get or set cache
+const getOrSetCache = async (key, fetchFunction) => {
+  if (cache.has(key)) {
+    const { value, timestamp } = cache.get(key);
+    if (Date.now() - timestamp < CACHE_DURATION) {
+      return value;
+    }
+  }
+  const freshData = await fetchFunction();
+  cache.set(key, { value: freshData, timestamp: Date.now() });
+  return freshData;
+};
+
+// Function to fetch a quote from the external API
+const fetchQuoteFromAPI = async () => {
+  const response = await axios.get('https://zenquotes.io/api/random');
+  return response.data[0];
+};
+
 
 // Helper function to convert distances from kilometers to miles
 function kmToMiles(distances) {
@@ -24,7 +46,7 @@ function kmToMiles(distances) {
     if (unit.toLowerCase() === 'km') {
       return `${(parseFloat(value) * 0.621371).toFixed(2)} mi`;
     }
-    return distance; // If it's already in miles or another unit, return as is
+    return distance;
   });
 }
 
@@ -34,30 +56,60 @@ function parseDistance(distance) {
   return parseFloat(value);
 }
 
-// Route for finding mental health counselors near a location
+
+// Serve the mental health locations page
+app.get('/mental_health_locations', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'app', 'public', 'mental_health_locations.html'));
+});
+
+// Get a random motivational quote
+app.get('/api/quotes/random', async (req, res) => {
+  try {
+    const quote = await getOrSetCache('randomQuote', fetchQuoteFromAPI);
+    res.json({ text: quote.q, author: quote.a });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+// Get all motivational quotes (cached)
+app.get('/api/quotes', async (req, res) => {
+  try {
+    const quotes = await getOrSetCache('allQuotes', async () => {
+      const fetchedQuotes = [];
+      for (let i = 0; i < 10; i++) {
+        const quote = await fetchQuoteFromAPI();
+        fetchedQuotes.push({ text: quote.q, author: quote.a });
+      }
+      return fetchedQuotes;
+    });
+    res.json(quotes);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Find mental health counselors near a location
 app.post('/find_counselors_location', async (req, res) => {
   const { latitude, longitude } = req.body;
-  console.log("Latitude: " + latitude + " Longitude: " + longitude);
   try {
-    // Initialize Google Maps Places API client
     const client = new Client({});
-    // Make a Places API request to find nearby places
     const response = await client.placesNearby({
       params: {
         location: `${latitude},${longitude}`,
-        radius: 5000, // 5km radius
+        radius: 5000,
         type: 'health',
         keyword: 'mental health counselor',
         key: process.env.GOOGLE_MAPS_API_KEY,
       },
     });
     
-    // Extract destination coordinates for distance calculation
     const destinations = response.data.results.map(place => 
       `${place.geometry.location.lat},${place.geometry.location.lng}`
     );
 
-    // Get distances for all facilities at once
     const distanceResponse = await client.distancematrix({
       params: {
         origins: [`${latitude},${longitude}`],
@@ -66,10 +118,8 @@ app.post('/find_counselors_location', async (req, res) => {
       },
     });
 
-    // Extract distances from the response and convert to miles
     let distances = kmToMiles(distanceResponse.data.rows[0].elements.map(element => element.distance.text));
 
-    // Extract relevant data from API response
     let counselors = response.data.results.map((place,index) => ({
       name: place.name,
       address: place.vicinity,
@@ -77,11 +127,8 @@ app.post('/find_counselors_location', async (req, res) => {
       distance: distances[index]
     }));
 
-    // Sort counselors by distance
     counselors.sort((a, b) => parseDistance(a.distance) - parseDistance(b.distance));
 
-    console.log('Counselors:', counselors);
-    // Return the sorted list of counselors as JSON
     res.json({ counselors });
   } catch (error) {
     console.error('Error finding counselors:', error);
@@ -89,20 +136,15 @@ app.post('/find_counselors_location', async (req, res) => {
   }
 });
 
-// Route for finding mental health facilities near a location
+// Find mental health facilities near a location
 app.post('/find_mental_health_facilities', async (req, res) => {
   const { latitude, longitude } = req.body;
-  console.log("Latitude: " + latitude + " Longitude: " + longitude);
   try {
-
-    // Initialize Google Maps Places API client
     const client = new Client({});
-    
-    // Make a Places API request to find nearby places
     const response = await client.placesNearby({
       params: {
         location: `${latitude},${longitude}`,
-        radius: 8000, // 8km radius
+        radius: 8000,
         type: 'health',
         keyword: 'mental health facility',
         key: process.env.GOOGLE_MAPS_API_KEY,
@@ -113,7 +155,6 @@ app.post('/find_mental_health_facilities', async (req, res) => {
       `${place.geometry.location.lat},${place.geometry.location.lng}`
     );
 
-    // Get distances for all facilities at once
     const distanceResponse = await client.distancematrix({
       params: {
         origins: [`${latitude},${longitude}`],
@@ -122,10 +163,8 @@ app.post('/find_mental_health_facilities', async (req, res) => {
       },
     });
 
-    // Extract distances from the response and convert to miles
     let distances = kmToMiles(distanceResponse.data.rows[0].elements.map(element => element.distance.text));
     
-    // Extract relevant data from API response
     let mentalHealthFacilities = response.data.results.map((place,index) => ({
       name: place.name,
       address: place.vicinity,
@@ -133,11 +172,8 @@ app.post('/find_mental_health_facilities', async (req, res) => {
       distance: distances[index]
     }));
 
-    // Sort facilities by distance
     mentalHealthFacilities.sort((a, b) => parseDistance(a.distance) - parseDistance(b.distance));
 
-    console.log('Mental Health Facilities:', mentalHealthFacilities);
-    // Return the sorted list of mental health facilities as JSON
     res.json({ mentalHealthFacilities });
   } catch (error) {
     console.error('Error finding mental health facilities:', error);
@@ -145,11 +181,9 @@ app.post('/find_mental_health_facilities', async (req, res) => {
   }
 });
 
-// Route for finding mental health events near a location
+// Find mental health events near a location
 app.post('/find_mental_health_events', async (req, res) => {
   const { latitude, longitude } = req.body;
-  console.log(`Latitude: ${latitude} Longitude: ${longitude}`);
-
   const currentDate = new Date().toISOString().split('T')[0];
 
   try {
@@ -159,7 +193,7 @@ app.post('/find_mental_health_events', async (req, res) => {
         'Accept': 'application/json'
       },
       params: {
-        'category': 'community,performing-arts,sports, expos, festivals, concerts,conferences',
+        'category': 'community,performing-arts,sports,expos,festivals,concerts,conferences',
         'location_around.origin': `${latitude},${longitude}`,
         'location_around.scale': '30km',
         'start.gte': currentDate,
@@ -167,14 +201,11 @@ app.post('/find_mental_health_events', async (req, res) => {
       }
     });
 
-    // Initialize Google Maps client
     const client = new Client({});
 
-    // Use Promise.all to perform reverse geocoding and distance calculation for all events in parallel
     let events = await Promise.all(response.data.results.map(async event => {
       const [lng, lat] = event.location;
       
-      // Perform reverse geocoding
       const geocodeResponse = await client.reverseGeocode({
         params: {
           latlng: `${lat},${lng}`,
@@ -182,10 +213,8 @@ app.post('/find_mental_health_events', async (req, res) => {
         },
       });
 
-      // Get the formatted address from the geocoding result
       const address = geocodeResponse.data.results[0]?.formatted_address || 'Address not found';
 
-      // Calculate distance
       const distanceResponse = await client.distancematrix({
         params: {
           origins: [`${latitude},${longitude}`],
@@ -194,7 +223,6 @@ app.post('/find_mental_health_events', async (req, res) => {
         },
       });
 
-      // Extract distance and convert to miles
       const distances = kmToMiles([distanceResponse.data.rows[0].elements[0].distance.text])[0];
 
       return {
@@ -209,13 +237,9 @@ app.post('/find_mental_health_events', async (req, res) => {
       };
     }));
 
-    // Sort events by distance
     events.sort((a, b) => parseDistance(a.distance) - parseDistance(b.distance));
 
-    console.log('Mental Health Events:', JSON.stringify(events, null, 2));
-
     res.json({ events });
-
   } catch (error) {
     console.error('Error finding mental health events:', error.response ? error.response.data : error.message);
     res.status(500).json({
@@ -225,7 +249,8 @@ app.post('/find_mental_health_events', async (req, res) => {
   }
 });
 
-// Starting the server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/mental_health_locations`);
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}/fin`);
 });
