@@ -2,7 +2,6 @@ import "./App.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 // import { httpsCallable } from "react";
-import logo from "./assets/mindful-logo.png";
 
 function Registration() {
   {
@@ -30,7 +29,7 @@ function Registration() {
     <div className="form-input">
       {/* Creates an account and gives space for username and password. */}
       <h1 className="title">Create an Account</h1>
-      <h3>Please create a username and password.</h3>
+      <p>Please create a username and password.</p>
       <label>Email</label>
       <input type="text" id="email" />
       <br></br>
@@ -39,22 +38,23 @@ function Registration() {
       <br></br>
       <label>Confirm Password</label>
       <input type="text" id="confirm-password" />
-      <div className="remember-me">
+      <div className="two-factor">
         {/* Basically asks you for two-factor authentication. */}
         <p>Would you like to enable 2 factor authentication?</p>
-        <input type="checkbox" id="remember" />
-        {/* If checked, gives you a label to enable two factor authentication. */}
-        <label htmlFor="remember">Enable 2 factor Authentication</label>
+        <div className="two-factor-box">
+          <input type="checkbox" id="remember" />
+          {/* If checked, gives you a label to enable two factor authentication. */}
+          <label htmlFor="remember">Enable 2 factor Authentication</label>
+        </div>
       </div>
-
       <br></br>
-      <br></br>
-      <div className="login">
+      <div>
         {/* Gives you a chance to login if you already have the given account. */}
         <span>
-          Already have an account?<a href="#">Login</a>
+          Already have an account? <Link to="/">Login</Link>
         </span>
       </div>
+      <br></br>
       <div id="buttons">
         {/* Gives you chance to create account. */}
         <button id="submitButton" type="register">

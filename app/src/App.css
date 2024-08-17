@@ -155,6 +155,13 @@ label {
   flex-direction: column;
 }
 
+.two-factor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .register {
   text-align: center;
 }
