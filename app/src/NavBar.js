@@ -45,7 +45,7 @@ function NavBar() {
           {/* Directed to journal page when journal is clicked. */}
           <div className="journal-button" onClick={journalPage}>Journal</div>
           {/* Directed to suggestions page when suggestions is clicked. */}
-          <div className="suggestions" onClick={suggestionsPage}>Suggestions</div>
+          <div className="suggestions" onClick={suggestionsPage}>Recommendations</div>
           {/* Directed to login page when login is clicked. */}
           <div className="login-button" onClick={loginPage}>Log In</div>
         </div>
