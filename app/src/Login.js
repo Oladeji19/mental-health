@@ -3,7 +3,7 @@ import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import ForgotPassword from "./ForgotPassword.js";
 import Registration from "./Registration.js";
-//import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link } from "react-router-dom";
 
 function Login() {
   {
@@ -72,14 +72,13 @@ function Login() {
           <label htmlFor="remember">Remember me</label>
         </div>
         <div className="forgot">
-          {/* <Link to="/forgot-password">Forgot Password?</Link> */}
+          <Link to="Forgot Password">Forgot Password?</Link>
         </div>
       </div>
       {/* Allows you to register as a new user. */}
       <div className="register">
         <span>
-          Don't have an account?{" "}
-          {/* <Link to="/registration">Register?</Link> */}
+          Don't have an account? <Link to="Registration">Register?</Link>
         </span>
       </div>
       {/* I'm not a robot button. */}

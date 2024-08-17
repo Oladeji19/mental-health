@@ -1,14 +1,32 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ForgotPassword from "./ForgotPassword";
+import Registration from "./Registration";
+import "./App.css";
 import Home from "./Home";
 import NavBar from "./NavBar";
 import reportWebVitals from "./reportWebVitals";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <NavBar />,
+  },
+  {
+    path: "Forgot Password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "Registration",
+    element: <Registration />,
+  },
+]);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <NavBar />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

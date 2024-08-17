@@ -166,6 +166,11 @@ label {
   font-size: 96px;
 }
 
+#buttons-refresh {
+  align-items: left;
+  font-size: 96px;
+}
+
 #submitButton {
   font-size: 0.18em;
 }
@@ -231,4 +236,9 @@ label {
   padding-left: 15vw;
   padding-right: 15vw;
   text-align: center;
+}
+
+.two-factor {
+  display: flex;
+  justify-content: left;
 }

@@ -1,7 +1,6 @@
-// Imports the needed libraries.
 import "./App.css";
 import { useState } from "react";
-// import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 // import { httpsCallable } from "react";
 import logo from "./assets/mindful-logo.png";
 
@@ -28,21 +27,18 @@ function Registration() {
   };
 
   return (
-    <div className="container">
-      <div className="sign-up">
-        {/* Creates an account and gives space for username and password. */}
-        <h1 className="title">Create an Account</h1>
-        <h3>Please create a username and password.</h3>
-        <div class="cs-form-group">
-          <label>Email</label>
-          <input type="text" id="email" />
-        </div>
-        <br></br>
-        <label>Password</label>
-        <input type="text" id="password" />
-        <label>Confirm Password</label>
-        <input type="text" id="confirm-password" />
-      </div>
+    <div className="form-input">
+      {/* Creates an account and gives space for username and password. */}
+      <h1 className="title">Create an Account</h1>
+      <h3>Please create a username and password.</h3>
+      <label>Email</label>
+      <input type="text" id="email" />
+      <br></br>
+      <label>Password</label>
+      <input type="text" id="password" />
+      <br></br>
+      <label>Confirm Password</label>
+      <input type="text" id="confirm-password" />
       <div className="remember-me">
         {/* Basically asks you for two-factor authentication. */}
         <p>Would you like to enable 2 factor authentication?</p>
