@@ -106,7 +106,7 @@ body {
 }
 
 p {
-  font-size: 20px;
+  font-size: 17px;
   text-align: center;
 }
 
@@ -121,8 +121,20 @@ label {
   align-items: center;
 }
 
+.login {
+  padding-top: 12vh;
+}
+
+.login-title {
+  text-align: center;
+}
+
 .captchabackground {
-   padding-top: 12vh;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #buttons {
@@ -169,16 +181,54 @@ label {
 }
 
 .array-thoughts {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  display: inline-grid;
+  grid-template: repeat(3, 20vh) / repeat(3, 20vw);
+  margin-top: 2vh;
+  row-gap: 10vh;
+  column-gap: 10vw;
 }
 
 .thought {
   background-color: white;
   border: 1px solid black;
-  margin-top: 18px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   width: 20vw;
   height: 15vh;
+  padding: 15px;
+  overflow: scroll;
+}
+
+.recommendations {
+  padding-top: 12vh;
+  text-align: center;
+}
+
+.recommendation-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.events-label {
+  font-size: 15px;
+}
+
+.journal-edit-button {
+  margin: 10px;
+}
+
+.journal-input {
+  margin-right: 1vw;
+}
+
+.journal-form {
+  color: gray;
+}
+
+.recommendation-desc {
+  padding-left: 15vw;
+  padding-right: 15vw;
+  text-align: center;
 }
