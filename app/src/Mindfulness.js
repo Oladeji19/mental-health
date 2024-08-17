@@ -61,7 +61,7 @@ function Mindfulness() {
         <input type="text" value={reason}/><br></br>
 
         {/*Allows you to type whatever is needed to be typed.*/}
-        <label>Type anything you want here.</label>
+        <label>Vent Your Emotions</label>
         <textarea value={anything}></textarea>
         <br></br>
         {/*Uses button for submission*/}
