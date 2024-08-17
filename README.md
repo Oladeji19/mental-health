@@ -1,7 +1,6 @@
 How To Run Frontend:
 1. cd into the app folder.
-2. Run the npm install command.
-3. Run the npm audit fix --force command.
+3. Run the npm audit fix --force command if there are a lot of vulnerabilities.
 4. Enter "npm start".
 
 How to Run Backend:
