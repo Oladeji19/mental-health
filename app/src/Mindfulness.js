@@ -2,7 +2,9 @@ import "./App.css";
 import { useState } from "react";
 
 function Mindfulness() {
-  {/* Create the state variables for all of the given input. */}
+  {
+    /* Create the state variables for all of the given input. */
+  }
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [selectedFeeling, setSelectedFeeling] = useState("");
@@ -10,9 +12,43 @@ function Mindfulness() {
   const [anything, setAnything] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [additionalFeeling, setAdditionalFeeling] = useState("");
-  {/* Makes the input text for other emotions visible */}
+
+  {
+    /* Makes the input text for other emotions visible */
+  }
   const handleOptionChange = (event) => {
+    setSelectedFeeling(event.target.value);
     setShowInput(event.target.value === "Other");
+  };
+  {
+    /* Tracks everytime a user enters a character in the "Name" section */
+  }
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+  {
+    /* Tracks everytime a user enters a character in the "Date" section */
+  }
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
+  {
+    /* Tracks everytime a user enters a character in the "Enter the other feeling" section */
+  }
+  const handleAdditionalFeelingChange = (e) => {
+    setAdditionalFeeling(e.target.value);
+  };
+  {
+    /* Tracks everytime a user enters a character in the "Reason" section */
+  }
+  const handleReasonChange = (e) => {
+    setReason(e.target.value);
+  };
+  {
+    /* Tracks everytime a user enters a character in the "Vent Your Emotions" section */
+  }
+  const handleAnythingChange = (e) => {
+    setAnything(e.target.value);
   };
   return (
     <>
@@ -26,43 +62,51 @@ function Mindfulness() {
       <form className="details">
         {/* Labeling the name */}
         <label className="name">Name</label>
-        <input type="text" value={name}/>
+        <input type="text" value={name} onChange={handleNameChange} />
         <br></br>
         {/* Labeling the date */}
         <label className="date">Date</label>
-        <input type="text" value={date}/><br></br>
+        <input type="text" value={date} onChange={handleDateChange} />
+        <br></br>
         {/* Labeling the feelings */}
         <label className="feelings">How are you feeling?</label>
-        <select id="feelings" value={selectedFeeling} onChange={handleOptionChange}>
-           <option>Sad</option>
-           <option>Angry</option>
-           <option>Fear</option>
-           <option>Envy</option>
-           <option>Anxiety</option>
-           <option>Bored</option>
-           <option>Disgust</option>
-           <option>Embarrassment</option>
-           <option>Other</option>
-        </select><br></br>
+        <select
+          id="feelings"
+          value={selectedFeeling}
+          onChange={handleOptionChange}
+        >
+          <option>Sad</option>
+          <option>Angry</option>
+          <option>Fear</option>
+          <option>Envy</option>
+          <option>Anxiety</option>
+          <option>Bored</option>
+          <option>Disgust</option>
+          <option>Embarrassment</option>
+          <option>Other</option>
+        </select>
+        <br></br>
 
         {showInput && (
-           <div>
-              <label htmlFor="additionalFeeling">Enter the other feeling:</label>
-              <br></br>
-              <input
-                  type="text"
-                  id="additionalFeeling"
-                  value={additionalFeeling}
-              />
-           </div>
+          <div>
+            <label htmlFor="additionalFeeling">Enter the other feeling:</label>
+            <br></br>
+            <input
+              type="text"
+              id="additionalFeeling"
+              value={additionalFeeling}
+              onChange={handleAdditionalFeelingChange}
+            />
+          </div>
         )}
         {/* Labeling the reason. */}
         <label className="reason">Reason</label>
-        <input type="text" value={reason}/><br></br>
+        <input type="text" value={reason} onChange={handleReasonChange} />
+        <br></br>
 
         {/*Allows you to type whatever is needed to be typed.*/}
         <label>Vent Your Emotions</label>
-        <textarea value={anything}></textarea>
+        <textarea value={anything} onChange={handleAnythingChange}></textarea>
         <br></br>
         {/*Uses button for submission*/}
         <button>Submit</button>
