@@ -62,6 +62,14 @@ def create_tables():
             username TEXT NOT NULL UNIQUE,
             password TEXT NOT NULL,
             has_2_factor INTEGER DEFAULT 0
+            sleep_goal_hours INT,
+            exercise_goal_minutes INT,
+            meditation_goal INT, 
+            last_healthcare_log TEXT,
+            has_entered INT DEFAULT 0,
+            list_of_last_7_days_sleep TEXT
+            list_of_last_7_days_exercise TEXT
+            list_of_last_7_days_meditation TEXT
         )
         ''')
         
