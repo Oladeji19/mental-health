@@ -252,5 +252,5 @@ app.post('/find_mental_health_events', async (req, res) => {
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/fin`);
+  console.log(`Server running at http://localhost:${PORT}/`);
 });

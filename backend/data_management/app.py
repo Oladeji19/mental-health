@@ -2,8 +2,9 @@ import os
 from flask import Flask
 from flask_mail import Mail
 from registration_and_login import auth 
+from healthcare import healthcare
 #from matching_listeners import matching_listeners
-from database_setup import create_tables, add_problems
+from database_setup import create_tables
 
 def create_app():
     app = Flask(__name__)
@@ -21,7 +22,8 @@ def create_app():
     
     # Register blueprints
     app.register_blueprint(auth)
-    #app.register_blueprint(matching_listeners)
+    app.register_blueprint(healthcare)
+    
     
     return app
 
@@ -30,6 +32,5 @@ if __name__ == '__main__':
     
     # Create tables and add problems
     create_tables()
-    add_problems()
     
     app.run(debug=True)
