@@ -1,15 +1,81 @@
 import "./App.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-// import { httpsCallable } from "react";
+import TwoFactor from "./TwoFactor.js";
 
 function Registration() {
-  {
-    /* Allows you to set the email, password, and message upon clicking the buttons for emails, passwords, and manages. */
-  }
+  {/* State variable for email. */}
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+
+  {/* State variable for two factor. */}
+  const [showTwoFactor, setShowTwoFactor] = useState("");
+
+  {/* State variable for the new password created. */}
+  const [newPassword, setNewPassword] = useState("");
+
+  {/* State variable for the new password message. Length needs to be at least 12 characters.  */}
+  const [newPasswordMsg, setNewPasswordMsg] = useState("Length needs to be at least 12 characters.");
+
+  {/* State variable for the new password message to make sure that it consists of uppercase, lowercase, numbers, and symbols.  */}
+  const [newPasswordMsgCharacters, setNewPasswordMsgCharacters] = useState("Needs to contains uppercase and lowercase characters, numbers, and symbols.");
+
+  {/* State variable for the confirmed password.  */}
+  const [confirmedPassword, setConfirmedPassword] = useState("");
+
+  {/* State variable to ensure that the confirmed password is the same as the new password.  */}
+  const [confirmedPasswordMsg, setConfirmedPasswordMsg] = useState("Password should be the same as the original.");
+
+  {/* State variable for enabling and disabling the button to create the new account assuming that the new password as well as the confirmed password are both the same. */}
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  {/* Uppercase letters */}
+  const uppercase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+  {/* Lowercase letters */}
+  const lowercase = [  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+  {/* Numbers */}
+  const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+  {/* Symbols */}
+  const symbols = [
+    '@', '#', '$', '%', '&', '*', '!', '?', '^', '~', '|', '_', '+', '-', '=', 
+    '<', '>', '×', '÷', '√', '∞', '±', '≠', '≈', '∑', '∫', 'π', '∆', '∂',
+    '€', '£', '¥', '₹', '₽', '₩', '₫', '₦',
+    '.', ',', ';', ':', '\'', '"', '(', ')', '[', ']'
+  ];
+
+  {/* Checks to make sure that the password contains an element from an array. */}
+  function apply(arr, val) {
+    for(let a of arr) {
+      if(val.includes(a)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  {/* Updates the new password message for character check and length check as and when the user is adding a new password. */}
+  const handlePasswordChange = (event) => {
+    {/* Takes in the value. */}
+    const value = event.target.value;
+    {/* Apply function is created for symbols, uppercase, lowercase and numbers. For each apply function, a check happens to make sure that at least one of each: uppercase, lowercase, symbol, and numbers are present. */}
+    const booleans = [apply(symbols, value), apply(uppercase, value), apply(lowercase, value), apply(numbers, value)]
+    {/* Setting the new password, the new password length check message, as well as the new password character check message. */}
+    setNewPassword(value);
+    setNewPasswordMsg(value.length < 12 ? "Length needs to be at least 12 characters." : "");
+    setNewPasswordMsgCharacters(booleans.includes(false) ? "Needs to contains uppercase and lowercase characters, numbers, and symbols." : "");
+  }
+  const handleConfPasswordChange = (event) => {
+    {/* Takes in the value. */}
+    const value = event.target.value;
+    {/* Sets the confirmed password and message depending on whether the confirm password is the same as the new password. */}
+    setConfirmedPassword(value);
+    setConfirmedPasswordMsg(value !== newPassword ? "Password should be the same as the original." : "All set. Have fun.");
+    console.log(confirmedPasswordMsg !== "All set. Have fun.");
+    {/* Enables button if message says "All set. Have fun.". Else, keep the button disabled. */}
+    setIsButtonDisabled(confirmedPasswordMsg !== "All set. Have fun.");
+  }
 
   {
     /* Sets emails to target values. */
@@ -18,46 +84,47 @@ function Registration() {
     setEmail(event.target.value);
   };
 
-  {
-    /* Sets password to target values. */
+  {/* Shows the two factors only if the checkbox has been entered. */}
+  const handleCheckboxChange = (event) => {
+    setShowTwoFactor(event.target.checked);
   }
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
   return (
     <div className="form-input">
       {/* Creates an account and gives space for username and password. */}
       <h1 className="title">Create an Account</h1>
-      <p>Please create a username and password.</p>
+      <h3>Please create a username and password.</h3>
       <label>Email</label>
       <input type="text" id="email" />
       <br></br>
       <label>Password</label>
-      <input type="text" id="password" />
+      <input type="text" value={newPassword} onChange={handlePasswordChange} placeholder="Enter new password" />
       <br></br>
+      <p>{newPasswordMsg}</p>
+      <p>{newPasswordMsgCharacters}</p>
       <label>Confirm Password</label>
-      <input type="text" id="confirm-password" />
-      <div className="two-factor">
+      <input type="text" value={confirmedPassword} onChange={handleConfPasswordChange} placeholder="Re-enter password"/>
+      <p>{confirmedPasswordMsg}</p>
+      <div className="remember-me">
         {/* Basically asks you for two-factor authentication. */}
         <p>Would you like to enable 2 factor authentication?</p>
-        <div className="two-factor-box">
-          <input type="checkbox" id="remember" />
-          {/* If checked, gives you a label to enable two factor authentication. */}
-          <label htmlFor="remember">Enable 2 factor Authentication</label>
-        </div>
+        <input type="checkbox" 
+               id="remember" 
+               checked={showTwoFactor}
+               onChange={handleCheckboxChange}/>
+        {/* If checked, gives you a label to enable two factor authentication. */}
+        <label htmlFor="remember">Enable 2 factor Authentication</label>
       </div>
-      <br></br>
-      <div>
+      {/* Shows two factor only if two factor has been set to true. */}
+      {showTwoFactor && (<TwoFactor />)}
+      <div className="login">
         {/* Gives you a chance to login if you already have the given account. */}
         <span>
-          Already have an account? <Link to="/">Login</Link>
+          Already have an account?<a href="#">Login</a>
         </span>
       </div>
-      <br></br>
       <div id="buttons">
         {/* Gives you chance to create account. */}
-        <button id="submitButton" type="register">
+        <button disabled={isButtonDisabled}>
           Create Account
         </button>
         {/* Gives you chance to refresh if login is being done. */}
