@@ -10,6 +10,10 @@ body {
   text-align: center;
 }
 
+.new-pass {
+  font-size: 14px;
+}
+
 .our-mission {
   margin-top: 20vh;
   display: flex;
@@ -103,6 +107,16 @@ body {
   width: 100vw;
   text-align: center;
   font-size: 30px;
+}
+
+.welcome-page {
+  padding-top: 12vh;
+  font-size: 30px;
+}
+
+.healthcare {
+  text-align: center;
+  font-size: 20px;
 }
 
 p {
@@ -245,7 +259,32 @@ label {
   text-align: center;
 }
 
-.two-factor {
-  display: flex;
-  justify-content: left;
+.recommendations-array {
+  display: inline-grid;
+  grid-template: repeat(3, 20vh) / repeat(3, 20vw);
+  margin-top: 2vh;
+  row-gap: 5vh;
+  column-gap: 5vw;
 }
+
+.recommendation {
+  background-color: white;
+  border: 1px solid black;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 20vw;
+  height: 15vh;
+  padding: 15px;
+  overflow: scroll;
+  text-align: center;
+  font-size: 14px;
+}
+
+.recommendation-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
