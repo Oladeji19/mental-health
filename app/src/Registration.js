@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState } from "react";
-import TwoFactor from "./TwoFactor.js";
+import TwoFactor from "./Two-Factor.js";
 
 function Registration() {
   {/* State variable for email. */}

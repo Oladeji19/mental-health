@@ -5,6 +5,7 @@ import Activities from "./Activities.js";
 import Login from "./Login.js";
 import Suggestions from "./Suggestions.js";
 import Journal from "./Journal.js";
+import HealthcareAPI from "./HealthcareAPI.js";
 import { useState } from "react";
 import logo from "./assets/mindful-logo.png";
 
@@ -31,6 +32,9 @@ function NavBar() {
   const journalPage = () => {
     setPage({ ...page, data: <Journal /> });
   }
+  const healthCarePage = () => {
+    setPage({...page, data: <HealthcareAPI />});
+  }
   return (
     <>
       <div className="nav-bar">
@@ -46,6 +50,8 @@ function NavBar() {
           <div className="journal-button" onClick={journalPage}>Journal</div>
           {/* Directed to suggestions page when suggestions is clicked. */}
           <div className="suggestions" onClick={suggestionsPage}>Recommendations</div>
+          {/* Directed to login page when healthcareAPI is clicked. */}
+          <div className="healthcare-API-button" onClick={healthCarePage}>Healthcare API</div>
           {/* Directed to login page when login is clicked. */}
           <div className="login-button" onClick={loginPage}>Log In</div>
         </div>
