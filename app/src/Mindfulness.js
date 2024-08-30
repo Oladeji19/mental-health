@@ -10,12 +10,22 @@ function Mindfulness() {
   const [selectedFeeling, setSelectedFeeling] = useState("");
   const [reason, setReason] = useState("");
   const [anything, setAnything] = useState("");
+  const [selectedExperience, setSelectedExperience] = useState(0);
   const [showInput, setShowInput] = useState(false);
   const [additionalFeeling, setAdditionalFeeling] = useState("");
+  const [language, setLanguage] = useState("");
 
   {
     /* Makes the input text for other emotions visible */
   }
+
+  {
+    /* Tracks everytime a user enters a character in the "Name" section */
+  }
+  const handleExperienceChange = (e) => {
+    setSelectedExperience(e.target.value);
+  };
+
   const handleOptionChange = (event) => {
     setSelectedFeeling(event.target.value);
     setShowInput(event.target.value === "Other");
@@ -50,6 +60,14 @@ function Mindfulness() {
   const handleAnythingChange = (e) => {
     setAnything(e.target.value);
   };
+
+  {
+    /* Tracks everytime a user enters a character in the "Language" section */
+  }
+  const handleLanguageChange = (e) => {
+    setLanguage(e.target.value);
+  };
+
   return (
     <>
       <h1 className="vc-room">Venting Chat Room</h1>
@@ -100,8 +118,22 @@ function Mindfulness() {
           </div>
         )}
         {/* Labeling the reason. */}
-        <label className="reason">Reason</label>
-        <input type="text" value={reason} onChange={handleReasonChange} />
+        <label className="reason">Experience</label>
+        <select
+          id="experience"
+          value={selectedExperience}
+          onChange={handleExperienceChange}
+        >
+          <option>Under 1 year</option>
+          <option>1-5 years</option>
+          <option>6-10 years</option>
+          <option>11-15 years</option>
+          <option>16 years and above</option>
+        </select>
+        <br></br>
+
+        <label className="language">Language</label>
+        <textarea type="text" value={language} onChange={handleLanguageChange} />
         <br></br>
 
         {/*Allows you to type whatever is needed to be typed.*/}
