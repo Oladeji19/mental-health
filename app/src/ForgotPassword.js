@@ -70,25 +70,30 @@ function ForgotPassword() {
     {/* Enables button if message says "All set. Have fun.". Else, keep the button disabled. */}
     setIsButtonDisabled(value != newPassword);
   }
+
+  {/* Creates the state variable to show password. */}
+  const [showPassword, setShowPassword] = useState(false);
+
+  {/* Toggling the show password. */}
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
+
   return (
     <div className="form-input">
       {/* Title for forgetting the password. */}
       <h1 className="forget-password">Forgot Password</h1>
       {/* Allows you enter your email as well as a new password. */}
-      <p>Please enter your email and new password.</p>
-      <label>Email</label>
-      <input type="text" id="email" placeholder="Enter your email:"/>
+      <p>Please enter new password.</p>
       <br></br>
       <label>New Password</label>
-      <input type="text" value={newPassword} onChange={handlePasswordChange} placeholder="Enter new password"/>
+      <input type="password" value={newPassword} onChange={handlePasswordChange} placeholder="Enter new password"/>
       <br></br>
-      <div className="new-pass">
-        <p>{newPasswordMsg}</p>
-        <p>{newPasswordMsgCharacters}</p>
-      </div>
+      <p>{newPasswordMsg}</p>
+      <p>{newPasswordMsgCharacters}</p>
       {/* Confirms the password. */}
       <label>Confirm New Password</label>
-      <input type="text" value={confirmedPassword} onChange={handleConfPasswordChange} placeholder="Re-enter password" />
+      <input type="password" value={confirmedPassword} onChange={handleConfPasswordChange} placeholder="Re-enter password" />
       <br></br>
       <p>{confirmedPasswordMsg}</p>
       {/* ALlows you to navigate to the registration page. */}

@@ -55,6 +55,9 @@ body {
   color: white;
 }
 
+.form-input p {
+  font-size: 1em;
+}
 .App-link {
   color: #61dafb;
 }

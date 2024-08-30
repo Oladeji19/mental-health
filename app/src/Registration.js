@@ -1,10 +1,14 @@
 import "./App.css";
 import { useState } from "react";
 import TwoFactor from "./Two-Factor.js";
+import { Link } from "react-router-dom";
 
 function Registration() {
   {/* State variable for email. */}
   const [email, setEmail] = useState("");
+
+  {/* State variable for email message. */}
+  const [emailMsg, setEmailMsg] = useState("Email needs to have a prefix, @, domain and then .edu.");
 
   {/* State variable for two factor. */}
   const [showTwoFactor, setShowTwoFactor] = useState("");
@@ -55,6 +59,19 @@ function Registration() {
     }
     return false;
   }
+  {/* Regex expression for ensuring that the email is in the right format. */}
+  function rightFormat(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  {
+    /* Sets emails to target values. */
+  }
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+    setEmailMsg(!rightFormat(event.target.value) ? "Email needs to have a prefix, @, domain and then .edu." : "");
+  };
+
   {/* Updates the new password message for character check and length check as and when the user is adding a new password. */}
   const handlePasswordChange = (event) => {
     {/* Takes in the value. */}
@@ -74,15 +91,8 @@ function Registration() {
     setConfirmedPasswordMsg(value !== newPassword ? "Password should be the same as the original." : "All set. Have fun.");
     console.log(value + "::" + newPassword + "::::" + value !== newPassword);
     {/* Enables button if message says "All set. Have fun.". Else, keep the button disabled. */}
-    setIsButtonDisabled(value !== newPassword);
+    setIsButtonDisabled(value !== newPassword && emailMsg === "");
   }
-
-  {
-    /* Sets emails to target values. */
-  }
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
 
   {/* Shows the two factors only if the checkbox has been entered. */}
   const handleCheckboxChange = (event) => {
@@ -94,15 +104,14 @@ function Registration() {
       <h1 className="title">Create an Account</h1>
       <h3>Please create a username and password.</h3>
       <label>Email</label>
-      <input type="text" id="email" />
-      <br></br>
+      <input type="text" id="email" value={email} onChange={handleEmailChange} placeholder="Enter email"/>
+      <p>{emailMsg}</p>
       <label>Password</label>
-      <input type="text" value={newPassword} onChange={handlePasswordChange} placeholder="Enter new password" />
-      <br></br>
+      <input type="password" value={newPassword} onChange={handlePasswordChange} placeholder="Enter new password" />
       <p>{newPasswordMsg}</p>
       <p>{newPasswordMsgCharacters}</p>
       <label>Confirm Password</label>
-      <input type="text" value={confirmedPassword} onChange={handleConfPasswordChange} placeholder="Re-enter password"/>
+      <input type="password" value={confirmedPassword} onChange={handleConfPasswordChange} placeholder="Re-enter password"/>
       <p>{confirmedPasswordMsg}</p>
       <div className="remember-me">
         {/* Basically asks you for two-factor authentication. */}
@@ -119,7 +128,7 @@ function Registration() {
       <div className="login">
         {/* Gives you a chance to login if you already have the given account. */}
         <span>
-          Already have an account?<a href="#">Login</a>
+          Already have an account?<Link to="/">Login</Link>
         </span>
       </div>
       <div id="buttons">

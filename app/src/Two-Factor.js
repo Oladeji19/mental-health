@@ -5,10 +5,15 @@ import { httpsCallable } from "react";
 import logo from "./assets/mindful-logo.png";
 
 function TwoFactor(){
+    {/* State variable for the 5-digit code. */}
     const [code, setCode] = useState("");
+    {/* State variable for the character check, to ensure it is only numbers. */}
     const [characterMsg, setCharacterMsg] = useState("Code needs to be only numbers.");
+    {/* State variable for the length. Ensures that length is 5. */}
     const [lengthMsg, setLengthMsg] = useState("Length needs to be 5.");
+    {/* State variable for the button, enabled only when code length is 5 and all the values are numbers. */}
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    {/* Checks that code consists only of numbers. */}
     function allNumbers(code) {
         if(code.length === 0) {
             return false;
@@ -21,6 +26,7 @@ function TwoFactor(){
         }
         return true;
     }
+    {/* Consistently updates the character message, length message, and code, and enables the button when the 5-digit condition has been met. */}
     const handleCode = (event) => {
         const newCode = event.target.value;
         setCode(newCode);
