@@ -68,7 +68,7 @@ function ForgotPassword() {
     setConfirmedPasswordMsg(value !== newPassword ? "Password should be the same as the original." : "All set. Have fun.");
     console.log(confirmedPasswordMsg !== "All set. Have fun.");
     {/* Enables button if message says "All set. Have fun.". Else, keep the button disabled. */}
-    setIsButtonDisabled(confirmedPasswordMsg !== "All set. Have fun.");
+    setIsButtonDisabled(value != newPassword);
   }
   return (
     <div className="form-input">

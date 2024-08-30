@@ -72,9 +72,9 @@ function Registration() {
     {/* Sets the confirmed password and message depending on whether the confirm password is the same as the new password. */}
     setConfirmedPassword(value);
     setConfirmedPasswordMsg(value !== newPassword ? "Password should be the same as the original." : "All set. Have fun.");
-    console.log(confirmedPasswordMsg !== "All set. Have fun.");
+    console.log(value + "::" + newPassword + "::::" + value !== newPassword);
     {/* Enables button if message says "All set. Have fun.". Else, keep the button disabled. */}
-    setIsButtonDisabled(confirmedPasswordMsg !== "All set. Have fun.");
+    setIsButtonDisabled(value !== newPassword);
   }
 
   {

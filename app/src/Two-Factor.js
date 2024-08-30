@@ -10,19 +10,24 @@ function TwoFactor(){
     const [lengthMsg, setLengthMsg] = useState("Length needs to be 5.");
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     function allNumbers(code) {
+        if(code.length === 0) {
+            return false;
+        }
         const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         for(let c = 0; c < code.length; c++) {
-           if(!numbers.includes(code)) {
+           if(!numbers.includes(code[c])) {
                return false;
            }
         }
         return true;
     }
     const handleCode = (event) => {
-        setCode(event.target.value);
-        setCharacterMsg(!allNumbers(code) ? "Code needs to be only numbers." : "");
-        setLengthMsg(code.length != 5 ? "Length needs to be 5." : "");
-        setIsButtonDisabled(!(allNumbers(code) && code.length === 5));
+        const newCode = event.target.value;
+        setCode(newCode);
+        setCharacterMsg(!allNumbers(newCode) ? "Code needs to be only numbers." : "");
+        setLengthMsg(newCode.length !== 5 ? "Length needs to be 5." : "");
+        console.log(newCode.length);
+        setIsButtonDisabled(!(allNumbers(newCode) && newCode.length === 5));
     }
     return(
         <div className="container">
