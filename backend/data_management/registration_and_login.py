@@ -1,10 +1,10 @@
 import sqlite3
+import bcrypt
+import secrets
 from flask import Blueprint, request, jsonify
 from database_setup import create_connection
-import bcrypt
 from flask_mail import Mail, Message 
 from datetime import datetime, timedelta
-import secrets
 
 auth = Blueprint('auth', __name__)
 
@@ -38,7 +38,9 @@ def register_user():
 
         user_id = cursor.lastrowid
         conn.commit()
-        return jsonify({"message": "User registered successfully", "user_id": user_id}), 201
+        return jsonify({"message": "User registered successfully", 
+                        "user_id": user_id, 
+                        "redirect-url": "/login"}), 201
     
     except sqlite3.IntegrityError:
         return jsonify({"error": "Username or email already exists"}), 409
