@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function ForgotPassword() {
+  {/* State variable for email. */}
+  
   {/* State variable for the new password created. */}
   const [newPassword, setNewPassword] = useState("");
 

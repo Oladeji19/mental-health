@@ -4,8 +4,10 @@ import ReCAPTCHA from "react-google-recaptcha";
 import ForgotPassword from "./ForgotPassword.js";
 import Registration from "./Registration.js";
 import { Outlet, Link } from "react-router-dom";
+import { registeredUsers } from "./RegisteredUsers.js";
 
 function Login() {
+  let count = 1;
   {
     /* Creates a username and handles the username change. */
   }
@@ -36,14 +38,42 @@ function Login() {
     }
     return captcha;
   };
+  const containsUserPassword = (username, password) => {
+    const userPass = [false, false];
+    for(let i = 0; i < registeredUsers.length; i++) {
+        for(const [user, pass] of Object.entries(registeredUsers[i])) {
+            if(user === username) {
+              userPass[0] = true;
+            }
+            if(pass === password) {
+              userPass[1] = true;
+            }
+        }
+    }
+    console.log(userPass);
+    return userPass;
+  };
 
   {
     /* Makes sure that captcha is being done before the submit button is being clicked. If button isn't clicked, alert forced for logging in. */
   }
   const canSubmit = () => {
+    const userPass = [false, false];
+    const result = containsUserPassword(username, password);
     if (!captchaSet) {
+      console.log("1");
       alert("Complete the reCAPTCHA below before logging in.");
+    } else if(result[0] === false && result[1] === false) {
+      console.log("2");
+      alert("Please register");
+    } else if(result[0] === true && result[1] === false) {
+      console.log("3");
+      alert("Please go to forgot password");
+    } else if(result[0] === false && result[1] === true) {
+      console.log("4");
+      alert("Username isn't registered. Try again, please.");
     } else {
+      console.log("5");
       setUsername(username);
       setPassword(password);
       console.log("Your details are", username, password);

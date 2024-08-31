@@ -2,6 +2,7 @@ import "./App.css";
 import { useState } from "react";
 import TwoFactor from "./Two-Factor.js";
 import { Link } from "react-router-dom";
+import { registeredUsers } from "./RegisteredUsers.js";
 
 function Registration() {
   {/* State variable for email. */}
@@ -30,6 +31,9 @@ function Registration() {
 
   {/* State variable for enabling and disabling the button to create the new account assuming that the new password as well as the confirmed password are both the same. */}
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  {/* Register message */}
+  const [registerMessage, setRegisterMessage] = useState("");
 
   {/* Uppercase letters */}
   const uppercase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
@@ -98,6 +102,10 @@ function Registration() {
   const handleCheckboxChange = (event) => {
     setShowTwoFactor(event.target.checked);
   }
+  const addRegisteredUser = (emailAddress, password) => {
+    registeredUsers.push({[emailAddress] : password});
+  };
+
   return (
     <div className="form-input">
       {/* Creates an account and gives space for username and password. */}
@@ -133,7 +141,7 @@ function Registration() {
       </div>
       <div id="buttons">
         {/* Gives you chance to create account. */}
-        <button disabled={isButtonDisabled}>
+        <button onClick= {() => addRegisteredUser(email, newPassword)} disabled={isButtonDisabled}>
           Create Account
         </button>
         {/* Gives you chance to refresh if login is being done. */}
