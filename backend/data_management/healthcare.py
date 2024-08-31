@@ -60,21 +60,21 @@ def check_goals():
         sleep_goal, meditation_goal, exercise_goal = c.fetchone()
 
         messages = []
-        if sleep is not None:
+        if sleep_goal is not None and sleep is not None:
             sleep = int(sleep)
             if sleep >= sleep_goal:
                 messages.append("Good sleep! Keep up the good work!")
             else:
                 messages.append("We are here to support you in your sleep journey! Try again tomorrow.")
 
-        if meditation is not None:
+        if meditation_goal is not None and meditation is not None:
             meditation = int(meditation)
             if meditation >= meditation_goal:
                 messages.append("Good meditation! Keep up the good work!")
             else:
                 messages.append("We are here to support you in your meditation journey! Try again tomorrow.")
 
-        if exercise is not None:
+        if exercise_goal is not None and exercise is not None:
             exercise = int(exercise)
             if exercise >= exercise_goal:
                 messages.append("Good exercise! Keep up the good work!")

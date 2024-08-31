@@ -290,4 +290,8 @@ label {
   flex-direction: column;
 }
 
-
+.healthcare-info {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}

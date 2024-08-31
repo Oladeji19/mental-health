@@ -4,7 +4,7 @@ import Mindfulness from "./Mindfulness.js";
 import Login from "./Login.js";
 import Suggestions from "./Suggestions.js";
 import Journal from "./Journal.js";
-import HealthcareAPI from "./HealthcareAPI.js";
+import Healthcare from "./Healthcare.js";
 import { useState } from "react";
 import logo from "./assets/mindful-logo.png";
 
@@ -44,7 +44,7 @@ function NavBar() {
     setPage({ ...page, data: <Journal /> });
   };
   const healthCarePage = () => {
-    setPage({ ...page, data: <HealthcareAPI /> });
+    setPage({ ...page, data: <Healthcare /> });
   };
   return (
     <>

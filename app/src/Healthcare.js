@@ -1,0 +1,99 @@
+import { useState } from "react";
+
+function Healthcare() {
+  const [sleepGoals, setSleepGoals] = useState(null);
+  const [meditationGoals, setMeditationGoals] = useState(null);
+  const [exerciseGoals, setExerciseGoals] = useState(null);
+  const [message, setMessage] = useState(null);
+
+  const handleGoals = async () => {
+    if (
+      !(sleepGoals != null && sleepGoals <= 0) &&
+      !(meditationGoals != null && meditationGoals <= 0) &&
+      !(exerciseGoals != null && exerciseGoals <= 0)
+    ) {
+      alert("All inputs must be greater than or equal to 0.");
+    } else {
+      try {
+        const response = await fetch("http://localhost:4000/set_goals", {
+          body: JSON.stringify({
+            sleep_goals: "",
+            exercise: "",
+            meditation: "",
+          }),
+        });
+        const status = response.json.message;
+        setMessage(status);
+      } catch {}
+    }
+  };
+
+  return (
+    <div className="healthcare">
+      {/* Welcome page. */}
+      <div className="welcome-page">
+        Welcome to the Healthcare API. Here are some basic questions.
+      </div>
+      <br></br>
+      <div className="healthcare-info">
+        <form className="goals" onSubmit={handleGoals}>
+          <h3>Goals</h3>
+          {/* Asks about the hours of sleep. */}
+
+          <div className="sleep">
+            How many hours of sleep do you want to achieve?
+          </div>
+          <input
+            type="text"
+            value={sleepGoals}
+            onChange={(e) => setSleepGoals(e.target.value)}
+          ></input>
+          <br></br>
+          {/* Asks about the hours of meditation. */}
+          <div className="meditation">
+            How many minutes do you aim to spend meditation per day?
+          </div>
+          <input
+            type="text"
+            value={meditationGoals}
+            onChange={(e) => setMeditationGoals(e.target.value)}
+          ></input>
+          <br></br>
+          {/* Asks about the hours you spend working. */}
+          <div className="exercise">
+            How many minutes do you aim to work out per day?
+          </div>
+          <input
+            type="text"
+            value={exerciseGoals}
+            onChange={(e) => setExerciseGoals(e.target.value)}
+          ></input>
+          <br></br>
+          <button type="submit">Submit</button>
+          {message && <h2>{message}</h2>}
+        </form>
+        <form className="memo">
+          <h3>Memo</h3>
+          {/* Asks about the hours of sleep. */}
+          <div className="sleep">Hours of sleep:</div>
+          <input></input>
+          <br></br>
+          {/* Asks about the hours of meditation. */}
+          <div class="meditation">Minutes of meditation:</div>
+          <input></input>
+          <br></br>
+          {/* Asks about the hours you spend working. */}
+          <div className="exercise">
+            How many minutes do you aim to work out per day?
+          </div>
+          <input></input>
+          <br></br>
+          <button type="submit">Submit</button>
+        </form>
+        <br></br>
+      </div>
+    </div>
+  );
+}
+
+export default Healthcare;
