@@ -25,50 +25,7 @@ function Suggestions() {
     function sendPosition(position) {
       let latitude = position.coords.latitude;
       let longitude = position.coords.longitude;
-      fetch("/find_counselors_location", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ latitude, longitude }),
-      })
-        .then((response) => {
-          console.log(response);
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data.counselors);
-          setCounselors(data.counselors);
-        })
-        .catch((error) => {
-          setError(error);
-        })
-        .finally(() => setLoading(false));
-      fetch("/find_mental_health_facilities", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ latitude, longitude }),
-      })
-        .then((response) => {
-          console.log(response);
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data.mentalHealthFacilities);
-          setFacilities(data.mentalHealthFacilities);
-        })
-        .catch((error) => {
-          setError(error);
-        })
-        .finally(() => setLoading(false));
+      
     }
 
     {/* In case there is a location issue. */}

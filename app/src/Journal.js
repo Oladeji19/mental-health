@@ -68,6 +68,7 @@ function Journal() {
             handleInputChange(e);
             setCharCount(e.target.value.length);
           }}
+          placeholder="Insert text here"
         ></textarea>
         {charCount}
         <br></br>

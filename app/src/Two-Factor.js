@@ -34,6 +34,7 @@ function TwoFactor(){
         setLengthMsg(newCode.length !== 5 ? "Length needs to be 5." : "");
         console.log(newCode.length);
         setIsButtonDisabled(!(allNumbers(newCode) && newCode.length === 5));
+        console.log("fferfe");
     }
     return(
         <div className="container">

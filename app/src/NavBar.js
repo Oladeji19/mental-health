@@ -1,7 +1,6 @@
 import "./App.css";
 import Home from "./Home.js";
 import Mindfulness from "./Mindfulness.js";
-import Activities from "./Activities.js";
 import Login from "./Login.js";
 import Suggestions from "./Suggestions.js";
 import Journal from "./Journal.js";
@@ -11,7 +10,7 @@ import logo from "./assets/mindful-logo.png";
 
 function NavBar() {
   {/* The initial homepage with the welcome and the purpose is displayed. */}
-  const [page, setPage] = useState({ data: <Home /> });
+  const [page, setPage] = useState({ data: <Login /> });
   {/* Directed to the mindfulness page */}
   const mindfulnessPage = () => {
     setPage({ ...page, data: <Mindfulness /> });
