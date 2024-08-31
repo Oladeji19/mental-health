@@ -6,6 +6,12 @@ function Healthcare() {
   const [exerciseGoals, setExerciseGoals] = useState(null);
   const [message, setMessage] = useState(null);
 
+  const [sleepMemo, setSleepMemo] = useState(null);
+  const [meditationMemo, setMeditationMemo] = useState(null);
+  const [exerciseMemo, setExerciseMemo] = useState(null);
+
+  const [messagesMemo, setMessagesMemo] = useState(null);
+
   const handleGoals = async () => {
     if (
       !(sleepGoals != null && sleepGoals <= 0) &&
@@ -17,13 +23,37 @@ function Healthcare() {
       try {
         const response = await fetch("http://localhost:4000/set_goals", {
           body: JSON.stringify({
-            sleep_goals: "",
-            exercise: "",
-            meditation: "",
+            sleep_goals: sleepGoals,
+            exercise: exerciseGoals,
+            meditation: meditationGoals,
           }),
         });
         const status = response.json.message;
         setMessage(status);
+      } catch {}
+    }
+  };
+
+  const handleMemo = async () => {
+    if (
+      !(sleepMemo != null && sleepMemo <= 0) &&
+      !(meditationMemo != null && meditationMemo <= 0) &&
+      !(exerciseMemo != null && exerciseMemo <= 0)
+    ) {
+      alert("All inputs must be greater than or equal to 0.");
+    } else {
+      try {
+        const response = await fetch("http://localhost:4000/check_goals", {
+          body: JSON.stringify({
+            sleep: sleepMemo,
+            exercise: exerciseGoals,
+            meditation: meditationGoals,
+          }),
+        });
+        const status = response.json.message;
+        if (status === "Success") {
+          setMessagesMemo(response.json.feedback);
+        }
       } catch {}
     }
   };
@@ -72,24 +102,39 @@ function Healthcare() {
           <button type="submit">Submit</button>
           {message && <h2>{message}</h2>}
         </form>
-        <form className="memo">
-          <h3>Memo</h3>
-          {/* Asks about the hours of sleep. */}
-          <div className="sleep">Hours of sleep:</div>
-          <input></input>
-          <br></br>
-          {/* Asks about the hours of meditation. */}
-          <div class="meditation">Minutes of meditation:</div>
-          <input></input>
-          <br></br>
-          {/* Asks about the hours you spend working. */}
-          <div className="exercise">
-            How many minutes do you aim to work out per day?
-          </div>
-          <input></input>
-          <br></br>
-          <button type="submit">Submit</button>
-        </form>
+
+        {!messagesMemo && (
+          <form className="memo" onSubmit={handleMemo}>
+            <h3>Memo</h3>
+            {/* Asks about the hours of sleep. */}
+            <div className="sleep">Hours of sleep:</div>
+            <input
+              type="text"
+              value={sleepMemo}
+              onChange={(e) => setSleepMemo(e.target.value)}
+            ></input>
+            <br></br>
+            {/* Asks about the hours of meditation. */}
+            <div class="meditation">Minutes of meditation:</div>
+            <input
+              type="text"
+              value={meditationMemo}
+              onChange={(e) => setMeditationMemo(e.target.value)}
+            ></input>
+            <br></br>
+            {/* Asks about the hours you spend working. */}
+            <div className="exercise">
+              How many minutes do you aim to work out per day?
+            </div>
+            <input
+              type="text"
+              value={exerciseMemo}
+              onChange={(e) => setExerciseMemo(e.target.value)}
+            ></input>
+            <br></br>
+            <button type="submit">Submit</button>
+          </form>
+        )}
         <br></br>
       </div>
     </div>

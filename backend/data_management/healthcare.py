@@ -66,6 +66,8 @@ def check_goals():
                 messages.append("Good sleep! Keep up the good work!")
             else:
                 messages.append("We are here to support you in your sleep journey! Try again tomorrow.")
+        else:
+            messages.append("")
 
         if meditation_goal is not None and meditation is not None:
             meditation = int(meditation)
@@ -73,6 +75,8 @@ def check_goals():
                 messages.append("Good meditation! Keep up the good work!")
             else:
                 messages.append("We are here to support you in your meditation journey! Try again tomorrow.")
+        else:
+            messages.append("")
 
         if exercise_goal is not None and exercise is not None:
             exercise = int(exercise)
@@ -80,6 +84,8 @@ def check_goals():
                 messages.append("Good exercise! Keep up the good work!")
             else:
                 messages.append("We are here to support you in your exercise journey! Try again tomorrow.")
+        else:
+            messages.append("")
 
         c.execute('UPDATE user SET has_entered = 1 WHERE username = ?', (username,))
 
