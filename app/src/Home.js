@@ -25,8 +25,7 @@ function Home() {
           <p>
             Daily life tends to get busy, and routinely, we can lose track of
             what's important to us. Taking some time out of your day with our
-            activities can help. We also want to improve our space by allowing
-            everyone to input their recommendations.
+            activities can help.
           </p>
         </div>
         {/* 2nd picture on the home page */}

@@ -3,10 +3,14 @@ import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import ForgotPassword from "./ForgotPassword.js";
 import Registration from "./Registration.js";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { registeredUsers } from "./RegisteredUsers.js";
 
 function Login() {
+  {
+    /* Initializing useNavigate object to allow for conditional navigation. */
+  }
+  const navigate = useNavigate();
   let count = 1;
   {
     /* Creates a username and handles the username change. */
@@ -38,17 +42,21 @@ function Login() {
     }
     return captcha;
   };
+
+  {
+    /* Function to check if an existing user is logging in correctly */
+  }
   const containsUserPassword = (username, password) => {
     const userPass = [false, false];
-    for(let i = 0; i < registeredUsers.length; i++) {
-        for(const [user, pass] of Object.entries(registeredUsers[i])) {
-            if(user === username) {
-              userPass[0] = true;
-            }
-            if(pass === password) {
-              userPass[1] = true;
-            }
+    for (let i = 0; i < registeredUsers.length; i++) {
+      for (const [user, pass] of Object.entries(registeredUsers[i])) {
+        if (user === username) {
+          userPass[0] = true;
         }
+        if (pass === password) {
+          userPass[1] = true;
+        }
+      }
     }
     console.log(userPass);
     return userPass;
@@ -63,13 +71,13 @@ function Login() {
     if (!captchaSet) {
       console.log("1");
       alert("Complete the reCAPTCHA below before logging in.");
-    } else if(result[0] === false && result[1] === false) {
+    } else if (result[0] === false && result[1] === false) {
       console.log("2");
       alert("Please register");
-    } else if(result[0] === true && result[1] === false) {
+    } else if (result[0] === true && result[1] === false) {
       console.log("3");
       alert("Please go to forgot password");
-    } else if(result[0] === false && result[1] === true) {
+    } else if (result[0] === false && result[1] === true) {
       console.log("4");
       alert("Username isn't registered. Try again, please.");
     } else {
@@ -77,7 +85,7 @@ function Login() {
       setUsername(username);
       setPassword(password);
       console.log("Your details are", username, password);
-      alert("Logged In.");
+      navigate("Main");
     }
   };
 

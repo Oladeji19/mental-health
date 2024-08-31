@@ -6,12 +6,14 @@ import Registration from "./Registration";
 import "./App.css";
 import Home from "./Home";
 import NavBar from "./NavBar";
+import Login from "./Login";
 import reportWebVitals from "./reportWebVitals";
 
+// Routing to access each page.
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <NavBar />,
+    element: <Login />,
   },
   {
     path: "Forgot Password",
@@ -20,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "Registration",
     element: <Registration />,
+  },
+  {
+    path: "Main",
+    element: <NavBar />,
   },
 ]);
 
