@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="message-box">
+    <h2>Chat Room: {{ code }}</h2>
+    <div class="messages" id="messages"></div>
+    <div class="inputs">
+        <input type="text" rows="3" placeholder="Message" name="message" id="message"/>
+        <button type="button" name="send" id="send-btn" onClick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="user-info">
+    <h3>Room Members</h3>
+    <ul id="member-list">
+        {% for name, user_info in members.items() %}
+        <li>
+            {{ name }}
+            (Experience: {{ user_info.experience }},
+            Language: {{ user_info.language }},
+            Problems: {{ user_info.problems|join(', ') }})
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<script type="text/javascript">
+var socketio = io();
+
+
+const messages = document.getElementById("messages");
+const createMessage = (name, msg) => {
+    const content = `
+        <div class="text">
+            <span>
+                <strong>${name}</strong>: ${msg}
+            </span>
+            <span class="muted">
+                ${new Date().toLocaleString()}
+            </span>
+        </div>
+    `;
+    messages.innerHTML += content;
+};
+
+//listen for message event
+socketio.on("message", (data) => {
+    createMessage(data.name, data.message);
+});
+
+//send message
+const sendMessage = () => {
+    const message = document.getElementById("message");
+    if (message.value == "") return;
+
+    //emit message event
+    socketio.emit("message", { data: message.value });
+    message.value = "";
+};
+
+//update member list
+const updateMemberList = (members) => {
+    const memberList = document.getElementById("member-list");
+    memberList.innerHTML = '';
+    for (const [name, userInfo] of Object.entries(members)) {
+        const li = document.createElement('li');
+        li.textContent = `${name} (Experience: ${userInfo.experience}, Language: ${userInfo.language}, Problems: ${userInfo.problems.join(', ')})`;
+        memberList.appendChild(li);
+    }
+};
+
+//listen for update members event
+socketio.on("update_members", (members) => {
+    updateMemberList(members);
+});
+</script>
+{% endblock %}

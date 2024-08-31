@@ -14,7 +14,7 @@ function NavBar() {
   const [page, setPage] = useState({ data: <Home /> });
   {/* Directed to the mindfulness page */}
   const mindfulnessPage = () => {
-    setPage({ ...page, data: <Mindfulness /> });
+    window.location.href = "http://127.0.0.1:5000/";
   };
   {/* Directed to the home page */}
   const homePage = () => {
@@ -44,7 +44,7 @@ function NavBar() {
         <div className="options">
           {/* Directed to home page when logo is clicked. */}
           <div className="mindfulness" onClick={mindfulnessPage}>
-            Mindfulness
+           Venting Chat Room
           </div>
           {/* Directed to journal page when journal is clicked. */}
           <div className="journal-button" onClick={journalPage}>Journal</div>
