@@ -1,16 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Healthcare() {
   const [sleepGoals, setSleepGoals] = useState(null);
   const [meditationGoals, setMeditationGoals] = useState(null);
   const [exerciseGoals, setExerciseGoals] = useState(null);
   const [message, setMessage] = useState(null);
+  const [messagesMemo, setMessagesMemo] = useState(null);
 
   const [sleepMemo, setSleepMemo] = useState(null);
   const [meditationMemo, setMeditationMemo] = useState(null);
   const [exerciseMemo, setExerciseMemo] = useState(null);
+  const [showEnter, setshowEnter] = useState(true);
+  const [listOfLast7sleep, setlistOfLast7sleep] = useState([]);
+  const [listOfLast7meditation, setlistOfLast7meditation] = useState([]);
+  const [listOfLast7exercise, setlistOfLast7exercise] = useState([]);
 
-  const [messagesMemo, setMessagesMemo] = useState(null);
+useEffect(async() => {
+  const response = await fetch("http://localhost:5000/check_for_availability");
+  if(response.json.can_enter_information === true){
+    setshowEnter(false);
+  }
+  else{
+    setshowEnter(true);
+    setlistOfLast7sleep(response.json.sleep_data);
+    setlistOfLast7meditation(response.json.exercise_data);
+    setlistOfLast7exercise(response.json.meditation_data);
+  }
+}, [])
+
 
   const handleGoals = async () => {
     if (
@@ -18,11 +35,12 @@ function Healthcare() {
       !(meditationGoals != null && meditationGoals <= 0) &&
       !(exerciseGoals != null && exerciseGoals <= 0)
     ) {
-      alert("All inputs must be greater than or equal to 0.");
+      alert("All inputs must be greater than or equal to 40.");
     } else {
       try {
-        const response = await fetch("http://localhost:4000/set_goals", {
+        const response = await fetch("http://localhost:5000/set_goals", {
           body: JSON.stringify({
+
             sleep_goals: sleepGoals,
             exercise: exerciseGoals,
             meditation: meditationGoals,
@@ -40,10 +58,10 @@ function Healthcare() {
       !(meditationMemo != null && meditationMemo <= 0) &&
       !(exerciseMemo != null && exerciseMemo <= 0)
     ) {
-      alert("All inputs must be greater than or equal to 0.");
+      alert("All inputs must be greater than or equal to 40.");
     } else {
       try {
-        const response = await fetch("http://localhost:4000/check_goals", {
+        const response = await fetch("http://localhost:5000/check_goals", {
           body: JSON.stringify({
             sleep: sleepMemo,
             exercise: exerciseGoals,
@@ -103,8 +121,8 @@ function Healthcare() {
           {message && <h2>{message}</h2>}
         </form>
 
-        {!messagesMemo && (
-          <form className="memo" onSubmit={handleMemo}>
+        {showEnter && !messagesMemo && (
+          <div>
             <h3>Memo</h3>
             {/* Asks about the hours of sleep. */}
             <div className="sleep">Hours of sleep:</div>
@@ -132,10 +150,22 @@ function Healthcare() {
               onChange={(e) => setExerciseMemo(e.target.value)}
             ></input>
             <br></br>
-            <button type="submit">Submit</button>
-          </form>
+            <button type="submit" onClick={handleMemo}>Submit</button>
+          </div>
         )}
+        {messagesMemo && 
+          <div className="memo">
+            {messagesMemo.map((message, index) => {<h2>{message}</h2>})}
+          </div>
+        }
         <br></br>
+      </div>
+      <div>
+        {listOfLast7sleep.map((message,index) => {<h2>Day {index}: {message}</h2>})}
+        <br />
+        {listOfLast7meditation.map((message,index) => {<h2>Day {index}: {message}</h2>})}
+        <br />
+        {listOfLast7exercise.map((message,index) => {<h2>Day {index}: {message}</h2>})}
       </div>
     </div>
   );
