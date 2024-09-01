@@ -35,7 +35,7 @@ useEffect(async() => {
       !(meditationGoals != null && meditationGoals <= 0) &&
       !(exerciseGoals != null && exerciseGoals <= 0)
     ) {
-      alert("All inputs must be greater than or equal to 40.");
+      alert("All inputs must be greater than or equal to 0.");
     } else {
       try {
         const response = await fetch("http://localhost:5000/set_goals", {
@@ -58,7 +58,7 @@ useEffect(async() => {
       !(meditationMemo != null && meditationMemo <= 0) &&
       !(exerciseMemo != null && exerciseMemo <= 0)
     ) {
-      alert("All inputs must be greater than or equal to 40.");
+      alert("All inputs must be greater than or equal to 0.");
     } else {
       try {
         const response = await fetch("http://localhost:5000/check_goals", {
