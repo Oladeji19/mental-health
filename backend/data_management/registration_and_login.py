@@ -1,7 +1,7 @@
 import sqlite3
 import bcrypt
 import secrets
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify,session
 from database_setup import create_connection
 from flask_mail import Mail, Message 
 from datetime import datetime, timedelta
@@ -73,6 +73,7 @@ def login():
                 return initiate_2fa(user[0], user[1])
             
             # If the login is successful, return the user ID and username
+            session['username']=user[0]
             return jsonify({
                 "message": "Login successful",
                 "user_id": user[0],
@@ -89,9 +90,10 @@ def login():
 #logout user
 @auth.route('/logout', methods=['POST'])
 def logout():
-    data = request.json
-    if not all(key in data for key in ['user_id']):
-        return jsonify({"error": "User ID and user type are required"}), 400
+    session.clear()
+    return jsonify({"message": "Logout Successful"}), 200
+    
+    
     
    
 #initiates 2fa
