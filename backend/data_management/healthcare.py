@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from database_setup import create_connection
 from datetime import datetime, timedelta
 
@@ -9,7 +9,7 @@ healthcare = Blueprint('healthcare', __name__)
 def set_goals():
     conn = create_connection()
     c = conn.cursor()
-    username = request.json.get('username')
+    username = session['username']
     sleep = request.json.get('sleep_goal')
     exercise = request.json.get('exercise')
     meditation = request.json.get('meditation')
@@ -50,7 +50,7 @@ def set_goals():
 def check_goals():
     conn = create_connection()
     c = conn.cursor()
-    username = request.json.get('username')
+    username = session['username']
     sleep = request.json.get('sleep')
     exercise = request.json.get('exercise')
     meditation = request.json.get('meditation')
@@ -116,7 +116,7 @@ def check_goals():
 
 @healthcare.route('/check_for_availability', methods=['POST'])
 def check_for_availability():
-    username = request.json.get('username')
+    username = session['username']
     conn = create_connection()
     c = conn.cursor()
 
