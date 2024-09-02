@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import NavBar from "./NavBar.js";
 
 function Suggestions() {
+  // State variables for tracking the user's recommendations, and the error status.
   const [recommendations, setRecommendations] = useState([]);
   const [externalRecommendations, setExternalRecommendations] = useState({});
   const [error, setError] = useState(null); // State to track errors
 
+  // Section that fetches the recommendation system API.
   const fetchRecommendations = async () => {
     const userId = 1; // Replace with dynamic user ID
     const itemId = 101; // Replace with dynamic item ID
@@ -38,16 +40,19 @@ function Suggestions() {
   return (
     <div>
       <NavBar />
+      {/* Title for the recommendation system page. */}
       <h2>Recommendations</h2>
       <button onClick={fetchRecommendations}>Get Recommendations</button>
+      {/* Displays an error message if the recommendation system API fails to be fetched. */}
       {error && <p style={{ color: "red" }}>{error}</p>}{" "}
-      {/* Display error message */}
+      {/* The list of hybrid recommendations */}
       <h3>Hybrid Recommendations:</h3>
       <ul>
         {recommendations.map((item) => (
           <li key={item.item_id}>{item.title}</li>
         ))}
       </ul>
+      {/* The list of book recommendations */}
       <h3>Book Recommendation:</h3>
       {externalRecommendations.book && (
         <div>
@@ -63,6 +68,7 @@ function Suggestions() {
           </a>
         </div>
       )}
+      {/* The list of video recommendations */}
       <h3>Video Recommendation:</h3>
       {externalRecommendations.video && (
         <div>
@@ -76,6 +82,7 @@ function Suggestions() {
           </a>
         </div>
       )}
+      {/* The list of Ticketmaster event recommendations */}
       <h3>Ticketmaster Events:</h3>
       <ul>
         {externalRecommendations.ticketmaster_events &&
@@ -90,6 +97,7 @@ function Suggestions() {
             </li>
           ))}
       </ul>
+      {/* The list of PredictHQ event recommendations */}
       <h3>PredictHQ Events:</h3>
       <ul>
         {externalRecommendations.predicthq_events &&

@@ -1,11 +1,4 @@
 import "./App.css";
-import Home from "./Home.js";
-import Mindfulness from "./Mindfulness.js";
-import Login from "./Login.js";
-import Suggestions from "./Suggestions.js";
-import Journal from "./Journal.js";
-import Healthcare from "./Healthcare.js";
-import { useState } from "react";
 import logo from "./assets/mindful-logo.png";
 import { useNavigate } from "react-router-dom";
 

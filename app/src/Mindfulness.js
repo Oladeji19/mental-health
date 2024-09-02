@@ -16,10 +16,6 @@ function Mindfulness() {
   const [language, setLanguage] = useState("");
 
   {
-    /* Makes the input text for other emotions visible */
-  }
-
-  {
     /* Tracks everytime a user enters a character in the "Name" section */
   }
   const handleExperienceChange = (e) => {
@@ -133,7 +129,11 @@ function Mindfulness() {
         <br></br>
 
         <label className="language">Language</label>
-        <textarea type="text" value={language} onChange={handleLanguageChange} />
+        <textarea
+          type="text"
+          value={language}
+          onChange={handleLanguageChange}
+        />
         <br></br>
 
         {/*Allows you to type whatever is needed to be typed.*/}

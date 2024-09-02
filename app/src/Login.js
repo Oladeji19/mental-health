@@ -1,9 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import ForgotPassword from "./ForgotPassword.js";
-import Registration from "./Registration.js";
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registeredUsers } from "./RegisteredUsers.js";
 
 function Login() {

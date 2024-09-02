@@ -2,24 +2,32 @@ import { useState } from "react";
 import NavBar from "./NavBar.js";
 
 function Healthcare() {
+  {
+    /* State variables to track user input for each goal. */
+  }
   const [sleepGoals, setSleepGoals] = useState(null);
   const [meditationGoals, setMeditationGoals] = useState(null);
   const [exerciseGoals, setExerciseGoals] = useState(null);
   const [message, setMessage] = useState(null);
 
+  {
+    /* State variables to track user input for each goal. */
+  }
   const [sleepMemo, setSleepMemo] = useState(null);
   const [meditationMemo, setMeditationMemo] = useState(null);
   const [exerciseMemo, setExerciseMemo] = useState(null);
-
   const [messagesMemo, setMessagesMemo] = useState(null);
 
+  {
+    /* Deals with the input from the user with their goals. */
+  }
   const handleGoals = async () => {
     if (
       !(sleepGoals != null && sleepGoals <= 0) &&
       !(meditationGoals != null && meditationGoals <= 0) &&
       !(exerciseGoals != null && exerciseGoals <= 0)
     ) {
-      alert("All inputs must be greater than or equal to 0.");
+      alert("All inputs must be greater than or equal to 40.");
     } else {
       try {
         const response = await fetch("http://localhost:4000/set_goals", {
@@ -35,13 +43,16 @@ function Healthcare() {
     }
   };
 
+  {
+    /* Deals with the input from the user with what they do each day. */
+  }
   const handleMemo = async () => {
     if (
       !(sleepMemo != null && sleepMemo <= 0) &&
       !(meditationMemo != null && meditationMemo <= 0) &&
       !(exerciseMemo != null && exerciseMemo <= 0)
     ) {
-      alert("All inputs must be greater than or equal to 0.");
+      alert("All inputs must be greater than or equal to 40.");
     } else {
       try {
         const response = await fetch("http://localhost:4000/check_goals", {
