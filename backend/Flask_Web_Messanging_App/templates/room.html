@@ -8,19 +8,25 @@
         <button type="button" name="send" id="send-btn" onClick="sendMessage()">Send</button>
     </div>
 </div>
+
 <div class="user-info">
     <h3>Room Members</h3>
     <ul id="member-list">
         {% for name, user_info in members.items() %}
         <li>
-            {{ name }}
+            {{ name }} 
             (Experience: {{ user_info.experience }},
-            Language: {{ user_info.language }},
-            Problems: {{ user_info.problems|join(', ') }})
+            Feeling: {{ user_info.feeling }},
+            {% if user_info.additional_feeling %}
+                Additional Feeling: {{ user_info.additional_feeling }},
+            {% endif %}
+            Languages: {{ user_info.language }},
+            Vent Your Emotions: {{ user_info.anything }})
         </li>
         {% endfor %}
     </ul>
 </div>
+
 <script type="text/javascript">
 var socketio = io();
 
@@ -57,11 +63,10 @@ const sendMessage = () => {
 
 //update member list
 const updateMemberList = (members) => {
-    const memberList = document.getElementById("member-list");
-    memberList.innerHTML = '';
+    memberList.innerHTML = ''; // Clear current list
     for (const [name, userInfo] of Object.entries(members)) {
         const li = document.createElement('li');
-        li.textContent = `${name} (Experience: ${userInfo.experience}, Language: ${userInfo.language}, Problems: ${userInfo.problems.join(', ')})`;
+        li.textContent = `${name} (Experience: ${userInfo.experience}, Feeling: ${userInfo.feeling}, ${userInfo.additional_feeling ? 'Additional Feeling: ' + userInfo.additional_feeling + ', ' : ''}Languages: ${userInfo.language}, Vent Your Emotions: ${userInfo.anything})`;
         memberList.appendChild(li);
     }
 };
@@ -70,5 +75,6 @@ const updateMemberList = (members) => {
 socketio.on("update_members", (members) => {
     updateMemberList(members);
 });
+
 </script>
 {% endblock %}

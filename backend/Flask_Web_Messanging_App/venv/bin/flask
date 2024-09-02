@@ -1,4 +1,4 @@
-#!/Users/ivan/Desktop/mental-health/backend/Flask_Web_Messanging_App/venv/bin/python3
+#!/Users/ivan/mental-health/backend/Flask_Web_Messanging_App/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

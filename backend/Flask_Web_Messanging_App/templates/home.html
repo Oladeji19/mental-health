@@ -1,92 +1,58 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<form method="post">
-    <h3>Enter the Chat Room</h3>
+<form method="POST">
     <div>
-        <label>Name</label>
-        <input type="text" placeholder="Pick a name!" name="name" value="{{ name }}">
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ name }}">
     </div>
-    
-
-    <div class="join">
-        <input type="text" placeholder="Room Code" name="code" value="{{ code }}">
-        <button type="submit" name="join">Join a room</button>
+    <div>
+        {% if action == 'join' %}
+            <label>Room Code:</label>
+            <input type="text" name="code" value="{{ code }}" required>
+        {% else %}
+            <label>Room Code:</label>
+            <input type="text" name="code" value="{{ code }}" placeholder="Optional">
+        {% endif %}
     </div>
-    
-    <button type="submit" name="create" class="create-btn">Create a room</button>
-    
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
-    
-    <h3>Additional Information</h3>
-    <div class="form-group">
-     
-        <select name="experience" id="experience">
-            <option value="" disabled selected>Years of Experience</option>
-            <option value="0-1 years">0-1 years</option>
-            <option value="1-2 years">1-2 years</option>
-            <option value="2-3 years">2-3 years</option>
-            <option value="3-4 year">3-4 years</option>
-            <option value="3-4 year">4-5 years</option>
-            <option value="5+ years">5+ years</option>
+    <div>
+        <label>How are you feeling?</label>
+        <select name="feeling">
+            <option value="Sad">Sad</option>
+            <option value="Angry">Angry</option>
+            <option value="Fear">Fear</option>
+            <option value="Envy">Envy</option>
+            <option value="Anxiety">Anxiety</option>
+            <option value="Bored">Bored</option>
+            <option value="Disgust">Disgust</option>
+            <option value="Embarrassment">Embarrassment</option>
+            <option value="Other">Other</option>
         </select>
-        
-        <div>
-            <label>Select problems:</label><br>
-            <label><input type="checkbox" name="problems[]" value="Grief"> Grief</label><br>
-            <label><input type="checkbox" name="problems[]" value="Health Issues"> Health Issues</label><br>
-            <label><input type="checkbox" name="problems[]" value="Disappointments"> Disappointments</label><br>
-            <label><input type="checkbox" name="problems[]" value="Family Issues"> Family Issues</label><br>
-            <label><input type="checkbox" name="problems[]" value="Work Issues"> Work Issues</label><br>
-            <label><input type="checkbox" name="problems[]" value="Loneliness"> Loneliness</label><br>
-            <label><input type="checkbox" name="problems[]" value="Worldwide Issues"> Worldwide Issues</label><br>
-            <label><input type="checkbox" name="problems[]" value="Boring Tasks"> Boring Tasks</label><br>
-            <label><input type="checkbox" name="problems[]" value="Social Tasks"> Social Tasks</label><br>
-            <label><input type="checkbox" name="problems[]" value="Delays"> Delays</label><br>
-            <label><input type="checkbox" name="problems[]" value="Weather Conditions"> Weather Conditions</label><br>
-            <label><input type="checkbox" name="problems[]" value="Health"> Health</label><br>
-            <label><input type="checkbox" name="problems[]" value="Phobias"> Phobias</label><br>
-            <label><input type="checkbox" name="problems[]" value="Failure"> Failure</label><br>
-            <label><input type="checkbox" name="problems[]" value="Environmental Threats"> Environmental Threats</label><br>
-            <label><input type="checkbox" name="problems[]" value="Worldwide Threats"> Worldwide Threats</label><br>
-            <label><input type="checkbox" name="problems[]" value="Social Fear"> Social Fear</label><br>
-            <label><input type="checkbox" name="problems[]" value="Popularity"> Popularity</label><br>
-            <label><input type="checkbox" name="problems[]" value="Appearances"> Appearances</label><br>
-            <label><input type="checkbox" name="problems[]" value="Talent"> Talent</label><br>
-            <label><input type="checkbox" name="problems[]" value="Skill"> Skill</label><br>
-            <label><input type="checkbox" name="problems[]" value="Traits"> Traits</label><br>
-        </div>
-    
-      
-        <div>
-            <label>Select languages:</label><br>
-            <label><input type="checkbox" name="language[]" value="English"> English</label><br>
-            <label><input type="checkbox" name="language[]" value="Spanish"> Spanish</label><br>
-            <label><input type="checkbox" name="language[]" value="French"> French</label><br>
-            <label><input type="checkbox" name="language[]" value="German"> German</label><br>
-            <label><input type="checkbox" name="language[]" value="Chinese"> Chinese</label><br>
-            <label><input type="checkbox" name="language[]" value="Japanese"> Japanese</label><br>
-            <label><input type="checkbox" name="language[]" value="Korean"> Korean</label><br>
-            <label><input type="checkbox" name="language[]" value="Italian"> Italian</label><br>
-            <label><input type="checkbox" name="language[]" value="Russian"> Russian</label><br>
-            <label><input type="checkbox" name="language[]" value="Portuguese"> Portuguese</label><br>
-            <label><input type="checkbox" name="language[]" value="Arabic"> Arabic</label><br>
-            <label><input type="checkbox" name="language[]" value="Hindi"> Hindi</label><br>
-            <label><input type="checkbox" name="language[]" value="Bengali"> Bengali</label><br>
-            <label><input type="checkbox" name="language[]" value="Punjabi"> Punjabi</label><br>
-            <label><input type="checkbox" name="language[]" value="Telugu"> Telugu</label><br>
-            <label><input type="checkbox" name="language[]" value="Marathi"> Marathi</label><br>
-            <label><input type="checkbox" name="language[]" value="Tamil"> Tamil</label><br>
-            <label><input type="checkbox" name="language[]" value="Urdu"> Urdu</label><br>
-            <label><input type="checkbox" name="language[]" value="Turkish"> Turkish</label><br>
-            <label><input type="checkbox" name="language[]" value="Vietnamese"> Vietnamese</label><br>
-        </div>
-
     </div>
-    
+    <div>
+        <label>Enter the other feeling:</label>
+        <input type="text" name="additionalFeeling" placeholder="Optional">
+    </div>
+    <div>
+        <label>Experience:</label>
+        <select name="experience">
+            <option value="Under 1 year">Under 1 year</option>
+            <option value="1-5 years">1-5 years</option>
+            <option value="6-10 years">6-10 years</option>
+            <option value="11-15 years">11-15 years</option>
+            <option value="16 years and above">16 years and above</option>
+        </select>
+    </div>
+    <div>
+        <label>Language:</label>
+        <input type="text" name="language">
+    </div>
+    <div>
+        <label>Vent Your Emotions:</label>
+        <textarea name="anything"></textarea>
+    </div>
+    <button type="submit" name="action" value="join">Join a room</button>
+    <button type="submit" name="action" value="create">Create a room</button>
 </form>
 
 <h3>Available Rooms</h3>
@@ -96,16 +62,17 @@
         <li>
             Room: {{ room_code }} 
             (Members: {{ room_info.members|length }})
-            <form method="post" style="display: inline;">
-                <input type="hidden" name="code" value="{{ room_code }}">
-                <input type="hidden" name="join" value="true">
-            </form>
+           
             <ul>
             {% for name, user_info in room_info.members.items() %}
                 <li>
                     {{ name }} (Experience: {{ user_info.experience }}, 
-                    Languages: {{ user_info.language|join(', ') }}, 
-                    Problems: {{ user_info.problems|join(', ') }})
+                    Feeling: {{ user_info.feeling }}, 
+                    {% if user_info.additional_feeling %}
+                        Additional Feeling: {{ user_info.additional_feeling }},
+                    {% endif %}
+                    Languages: {{ user_info.language }},
+                    Vent Your Emotions: {{ user_info.anything }})
                 </li>
             {% endfor %}
             </ul>
@@ -116,4 +83,3 @@
     <p>No rooms available. Create a new room to get started!</p>
 {% endif %}
 {% endblock %}
-

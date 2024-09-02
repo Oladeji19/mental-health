@@ -9,6 +9,7 @@ import Registration from "./Registration";
 import Journal from "./Journal";
 import Suggestions from "./Suggestions";
 import Healthcare from "./Healthcare";
+import Mindfulness from "./Mindfulness";
 
 import reportWebVitals from "./reportWebVitals";
 
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
     path: "Healthcare",
     element: <Healthcare />,
   },
+  
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
