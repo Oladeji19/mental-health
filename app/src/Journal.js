@@ -1,4 +1,5 @@
 import { useState } from "react";
+import NavBar from "./NavBar";
 
 function Journal() {
   {
@@ -51,49 +52,52 @@ function Journal() {
   const [charCount, setCharCount] = useState(0);
 
   return (
-    <div className="journal">
-      {/* Journal title is being demonstrated. */}
-      <h1>Journal Time</h1>
-      <p>
-        Welcome to the journal webpage. Write whatever thoughts you feel like
-        sharing.
-      </p>
-      {/* Submit button. Adds the thought to the main page upon click. */}
-      <form className="journal-form" onSubmit={handleSubmit}>
-        <textarea
-          className="journal-input"
-          type="text"
-          value={input_val}
-          onChange={(e) => {
-            handleInputChange(e);
-            setCharCount(e.target.value.length);
-          }}
-          placeholder="Insert text here"
-        ></textarea>
-        {charCount}
-        <br></br>
-        <br></br>
-        <button type="submit">Submit</button>
-      </form>
-      {/* Actually responsible for printing out everything in the array. */}
-      <div className="array-thoughts">
-        {/* Creates an entry along with an edit and delete button. */}
-        {array.map((item, index) => (
-          <div className="thought">
-            <div>Entry #{array.length - index}</div>
-            <hr></hr>
-            <div>{item}</div>
-            <button
-              className="journal-edit-button"
-              onClick={() => editEntry(index)}
-            >
-              Edit
-            </button>
-            <button onClick={() => deleteEntry(index)}>Delete</button>
-          </div>
-        ))}
+    <>
+      <NavBar />
+      <div className="journal">
+        {/* Journal title is being demonstrated. */}
+        <h1>Journal Time</h1>
+        <p>
+          Welcome to the journal webpage. Write whatever thoughts you feel like
+          sharing.
+        </p>
+        {/* Submit button. Adds the thought to the main page upon click. */}
+        <form className="journal-form" onSubmit={handleSubmit}>
+          <textarea
+            className="journal-input"
+            type="text"
+            value={input_val}
+            onChange={(e) => {
+              handleInputChange(e);
+              setCharCount(e.target.value.length);
+            }}
+            placeholder="Insert text here"
+          ></textarea>
+          {charCount}
+          <br></br>
+          <br></br>
+          <button type="submit">Submit</button>
+        </form>
+        {/* Actually responsible for printing out everything in the array. */}
+        <div className="array-thoughts">
+          {/* Creates an entry along with an edit and delete button. */}
+          {array.map((item, index) => (
+            <div className="thought">
+              <div>Entry #{array.length - index}</div>
+              <hr></hr>
+              <div>{item}</div>
+              <button
+                className="journal-edit-button"
+                onClick={() => editEntry(index)}
+              >
+                Edit
+              </button>
+              <button onClick={() => deleteEntry(index)}>Delete</button>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

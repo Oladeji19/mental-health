@@ -1,12 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ForgotPassword from "./ForgotPassword";
-import Registration from "./Registration";
+
 import "./App.css";
 import Home from "./Home";
-import NavBar from "./NavBar";
 import Login from "./Login";
+import ForgotPassword from "./ForgotPassword";
+import Registration from "./Registration";
+import Journal from "./Journal";
+import Suggestions from "./Suggestions";
+import Healthcare from "./Healthcare";
+
 import reportWebVitals from "./reportWebVitals";
 
 // Routing to access each page.
@@ -24,8 +28,20 @@ const router = createBrowserRouter([
     element: <Registration />,
   },
   {
-    path: "Main",
-    element: <NavBar />,
+    path: "Home",
+    element: <Home />,
+  },
+  {
+    path: "Journal",
+    element: <Journal />,
+  },
+  {
+    path: "Suggestions",
+    element: <Suggestions />,
+  },
+  {
+    path: "Healthcare",
+    element: <Healthcare />,
   },
 ]);
 

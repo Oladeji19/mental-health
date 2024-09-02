@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import ForgotPassword from "./ForgotPassword.js";
 import Registration from "./Registration.js";
@@ -11,6 +11,10 @@ function Login() {
     /* Initializing useNavigate object to allow for conditional navigation. */
   }
   const navigate = useNavigate();
+  {
+    /* Remember me state variable that toggles status of Remember Me. */
+  }
+  const [rememberMe, setRememberMe] = useState(false);
   let count = 1;
   {
     /* Creates a username and handles the username change. */
@@ -66,7 +70,6 @@ function Login() {
     /* Makes sure that captcha is being done before the submit button is being clicked. If button isn't clicked, alert forced for logging in. */
   }
   const canSubmit = () => {
-    const userPass = [false, false];
     const result = containsUserPassword(username, password);
     if (!captchaSet) {
       console.log("1");
@@ -81,13 +84,31 @@ function Login() {
       console.log("4");
       alert("Username isn't registered. Try again, please.");
     } else {
+      if (rememberMe) {
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+        console.log("User is remembered");
+      }
       console.log("5");
       setUsername(username);
       setPassword(password);
       console.log("Your details are", username, password);
-      navigate("Main");
+      navigate("Home");
     }
   };
+
+  const handleCheckboxChange = () => {
+    setRememberMe(!rememberMe);
+  };
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    const storedPassword = localStorage.getItem("password");
+    if (storedUsername && storedPassword) {
+      setUsername(storedUsername);
+      setPassword(storedPassword);
+    }
+  }, []);
 
   return (
     <div className="login">
@@ -96,17 +117,32 @@ function Login() {
       <p>Please enter your username and password.</p>
       <div className="form-input">
         <label>Username</label>
-        <input type="text" id="username" onChange={handleUserNameChange} />
+        <input
+          type="text"
+          id="username"
+          value={username}
+          onChange={handleUserNameChange}
+        />
         <br></br>
         <label>Password</label>
-        <input type="password" id="password" onChange={handlePasswordChange} />
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={handlePasswordChange}
+        />
       </div>
       <br></br>
       <br></br>
       {/* The container for people who've forgotten their password. */}
       <div className="remember-forgot">
         <div className="remember-me">
-          <input type="checkbox" id="remember" />
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={handleCheckboxChange}
+            id="remember"
+          />
           <label htmlFor="remember">Remember me</label>
         </div>
         <div className="forgot">

@@ -7,12 +7,13 @@ import Journal from "./Journal.js";
 import Healthcare from "./Healthcare.js";
 import { useState } from "react";
 import logo from "./assets/mindful-logo.png";
+import { useNavigate } from "react-router-dom";
 
 function NavBar() {
   {
-    /* The initial homepage with the welcome and the purpose is displayed. */
+    /* Initializing useNavigate object to allow for conditional navigation. */
   }
-  const [page, setPage] = useState({ data: <Home /> });
+  const navigate = useNavigate();
   {
     /* Directed to the mindfulness page */
   }
@@ -23,28 +24,28 @@ function NavBar() {
     /* Directed to the home page */
   }
   const homePage = () => {
-    setPage({ ...page, data: <Home /> });
+    navigate("/Home");
   };
   {
     /* Directed to the login page */
   }
   const loginPage = () => {
-    setPage({ ...page, data: <Login /> });
+    navigate("/");
   };
   {
     /* Directed to the suggestions page */
   }
   const suggestionsPage = () => {
-    setPage({ ...page, data: <Suggestions /> });
+    navigate("/Suggestions");
   };
   {
     /* Directed to the journal page */
   }
   const journalPage = () => {
-    setPage({ ...page, data: <Journal /> });
+    navigate("/Journal");
   };
   const healthCarePage = () => {
-    setPage({ ...page, data: <Healthcare /> });
+    navigate("/Healthcare");
   };
   return (
     <>
@@ -75,8 +76,6 @@ function NavBar() {
           </div>
         </div>
       </div>
-      {/* The certain page is displayed. */}
-      <div className="current-page">{page.data}</div>
     </>
   );
 }
