@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class = "wrapper">
 <form method="POST">
     <div>
         <label>Name:</label>
@@ -12,7 +13,8 @@
             <input type="text" name="code" value="{{ code }}" required>
         {% else %}
             <label>Room Code:</label>
-            <input type="text" name="code" value="{{ code }}" placeholder="Optional">
+            <input type="text"
+             name="code" value="{{ code }}" placeholder="Optional">
         {% endif %}
     </div>
     <div>
@@ -54,6 +56,7 @@
     <button type="submit" name="action" value="join">Join a room</button>
     <button type="submit" name="action" value="create">Create a room</button>
 </form>
+</div>
 
 <h3>Available Rooms</h3>
 {% if rooms %}
