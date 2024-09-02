@@ -1,37 +1,46 @@
-import { useState } from "react";
-import NavBar from "./NavBar.js";
+import { useEffect, useState } from "react";
 
 function Healthcare() {
-  {
-    /* State variables to track user input for each goal. */
-  }
   const [sleepGoals, setSleepGoals] = useState(null);
   const [meditationGoals, setMeditationGoals] = useState(null);
   const [exerciseGoals, setExerciseGoals] = useState(null);
   const [message, setMessage] = useState(null);
+  const [messagesMemo, setMessagesMemo] = useState(null);
 
-  {
-    /* State variables to track user input for each goal. */
-  }
   const [sleepMemo, setSleepMemo] = useState(null);
   const [meditationMemo, setMeditationMemo] = useState(null);
   const [exerciseMemo, setExerciseMemo] = useState(null);
-  const [messagesMemo, setMessagesMemo] = useState(null);
+  const [showEnter, setshowEnter] = useState(true);
+  const [listOfLast7sleep, setlistOfLast7sleep] = useState([]);
+  const [listOfLast7meditation, setlistOfLast7meditation] = useState([]);
+  const [listOfLast7exercise, setlistOfLast7exercise] = useState([]);
 
-  {
-    /* Deals with the input from the user with their goals. */
+useEffect(async() => {
+  const response = await fetch("http://localhost:5000/check_for_availability");
+  if(response.json.can_enter_information === true){
+    setshowEnter(false);
   }
+  else{
+    setshowEnter(true);
+    setlistOfLast7sleep(response.json.sleep_data);
+    setlistOfLast7meditation(response.json.exercise_data);
+    setlistOfLast7exercise(response.json.meditation_data);
+  }
+}, [])
+
+
   const handleGoals = async () => {
     if (
       !(sleepGoals != null && sleepGoals <= 0) &&
       !(meditationGoals != null && meditationGoals <= 0) &&
       !(exerciseGoals != null && exerciseGoals <= 0)
     ) {
-      alert("All inputs must be greater than or equal to 40.");
+      alert("All inputs must be greater than or equal to 0.");
     } else {
       try {
-        const response = await fetch("http://localhost:4000/set_goals", {
+        const response = await fetch("http://localhost:5000/set_goals", {
           body: JSON.stringify({
+
             sleep_goals: sleepGoals,
             exercise: exerciseGoals,
             meditation: meditationGoals,
@@ -43,19 +52,16 @@ function Healthcare() {
     }
   };
 
-  {
-    /* Deals with the input from the user with what they do each day. */
-  }
   const handleMemo = async () => {
     if (
       !(sleepMemo != null && sleepMemo <= 0) &&
       !(meditationMemo != null && meditationMemo <= 0) &&
       !(exerciseMemo != null && exerciseMemo <= 0)
     ) {
-      alert("All inputs must be greater than or equal to 40.");
+      alert("All inputs must be greater than or equal to 0.");
     } else {
       try {
-        const response = await fetch("http://localhost:4000/check_goals", {
+        const response = await fetch("http://localhost:5000/check_goals", {
           body: JSON.stringify({
             sleep: sleepMemo,
             exercise: exerciseGoals,
@@ -71,36 +77,67 @@ function Healthcare() {
   };
 
   return (
-    <>
-      <NavBar />
-      <div className="healthcare">
-        {/* Welcome page. */}
-        <div className="welcome-page">
-          Welcome to the Healthcare API. Here are some basic questions.
-        </div>
-        <br></br>
-        <div className="healthcare-info">
-          <form className="goals" onSubmit={handleGoals}>
-            <h3>Goals</h3>
-            {/* Asks about the hours of sleep. */}
+    <div className="healthcare">
+      {/* Welcome page. */}
+      <div className="welcome-page">
+        Welcome to the Healthcare API. Here are some basic questions.
+      </div>
+      <br></br>
+      <div className="healthcare-info">
+        <form className="goals" onSubmit={handleGoals}>
+          <h3>Goals</h3>
+          {/* Asks about the hours of sleep. */}
 
-            <div className="sleep">
-              How many hours of sleep do you want to achieve?
-            </div>
+          <div className="sleep">
+            How many hours of sleep do you want to achieve?
+          </div>
+          <input
+            type="text"
+            value={sleepGoals}
+            onChange={(e) => setSleepGoals(e.target.value)}
+          ></input>
+          <br></br>
+          {/* Asks about the hours of meditation. */}
+          <div className="meditation">
+            How many minutes do you aim to spend meditation per day?
+          </div>
+          <input
+            type="text"
+            value={meditationGoals}
+            onChange={(e) => setMeditationGoals(e.target.value)}
+          ></input>
+          <br></br>
+          {/* Asks about the hours you spend working. */}
+          <div className="exercise">
+            How many minutes do you aim to work out per day?
+          </div>
+          <input
+            type="text"
+            value={exerciseGoals}
+            onChange={(e) => setExerciseGoals(e.target.value)}
+          ></input>
+          <br></br>
+          <button type="submit">Submit</button>
+          {message && <h2>{message}</h2>}
+        </form>
+
+        {showEnter && !messagesMemo && (
+          <div>
+            <h3>Memo</h3>
+            {/* Asks about the hours of sleep. */}
+            <div className="sleep">Hours of sleep:</div>
             <input
               type="text"
-              value={sleepGoals}
-              onChange={(e) => setSleepGoals(e.target.value)}
+              value={sleepMemo}
+              onChange={(e) => setSleepMemo(e.target.value)}
             ></input>
             <br></br>
             {/* Asks about the hours of meditation. */}
-            <div className="meditation">
-              How many minutes do you aim to spend meditation per day?
-            </div>
+            <div class="meditation">Minutes of meditation:</div>
             <input
               type="text"
-              value={meditationGoals}
-              onChange={(e) => setMeditationGoals(e.target.value)}
+              value={meditationMemo}
+              onChange={(e) => setMeditationMemo(e.target.value)}
             ></input>
             <br></br>
             {/* Asks about the hours you spend working. */}
@@ -109,50 +146,28 @@ function Healthcare() {
             </div>
             <input
               type="text"
-              value={exerciseGoals}
-              onChange={(e) => setExerciseGoals(e.target.value)}
+              value={exerciseMemo}
+              onChange={(e) => setExerciseMemo(e.target.value)}
             ></input>
             <br></br>
-            <button type="submit">Submit</button>
-            {message && <h2>{message}</h2>}
-          </form>
-
-          {!messagesMemo && (
-            <form className="memo" onSubmit={handleMemo}>
-              <h3>Memo</h3>
-              {/* Asks about the hours of sleep. */}
-              <div className="sleep">Hours of sleep:</div>
-              <input
-                type="text"
-                value={sleepMemo}
-                onChange={(e) => setSleepMemo(e.target.value)}
-              ></input>
-              <br></br>
-              {/* Asks about the hours of meditation. */}
-              <div class="meditation">Minutes of meditation:</div>
-              <input
-                type="text"
-                value={meditationMemo}
-                onChange={(e) => setMeditationMemo(e.target.value)}
-              ></input>
-              <br></br>
-              {/* Asks about the hours you spend working. */}
-              <div className="exercise">
-                How many minutes do you aim to work out per day?
-              </div>
-              <input
-                type="text"
-                value={exerciseMemo}
-                onChange={(e) => setExerciseMemo(e.target.value)}
-              ></input>
-              <br></br>
-              <button type="submit">Submit</button>
-            </form>
-          )}
-          <br></br>
-        </div>
+            <button type="submit" onClick={handleMemo}>Submit</button>
+          </div>
+        )}
+        {messagesMemo && 
+          <div className="memo">
+            {messagesMemo.map((message, index) => {<h2>{message}</h2>})}
+          </div>
+        }
+        <br></br>
       </div>
-    </>
+      <div>
+        {listOfLast7sleep.map((message,index) => {<h2>Day {index}: {message}</h2>})}
+        <br />
+        {listOfLast7meditation.map((message,index) => {<h2>Day {index}: {message}</h2>})}
+        <br />
+        {listOfLast7exercise.map((message,index) => {<h2>Day {index}: {message}</h2>})}
+      </div>
+    </div>
   );
 }
 
