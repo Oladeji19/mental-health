@@ -1,88 +1,120 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class = "wrapper">
-<form method="POST">
-    <div>
-        <label>Name:</label>
-        <input type="text" name="name" value="{{ name }}">
+{% extends 'base.html' %} {% block content %}
+<!-- Script conditionally showing the "Other" feeling option. -->
+<script>
+  function showOther() {
+    let feelingDropdownValue =
+      document.getElementById("feeling-dropdown").value;
+    if (feelingDropdownValue === "Other") {
+      document.getElementById("other-feeling").style.display = "block";
+    } else {
+      document.getElementById("other-feeling").style.display = "none";
+    }
+  }
+</script>
+<!-- Content for the form page of the venting chat room. -->
+<div class="wrapper">
+  <!-- Title for the venting chat room. -->
+  <h1 class="vc-room">Venting Chat Room</h1>
+  <p>
+    Please write your name, today's date, your feelings. Feel free to write as
+    many lines as possible.
+  </p>
+  <!-- Form for the user to input their details. -->
+  <form method="POST">
+    <!-- Field to input user's name. -->
+    <div class="input">
+      <label>Name:</label>
+      <input type="text" name="name" value="{{ name }}" />
     </div>
-    <div>
-        {% if action == 'join' %}
-            <label>Room Code:</label>
-            <input type="text" name="code" value="{{ code }}" required>
-        {% else %}
-            <label>Room Code:</label>
-            <input type="text"
-             name="code" value="{{ code }}" placeholder="Optional">
-        {% endif %}
+    <br />
+    <!-- Field to input room code. -->
+    <div class="input">
+      {% if action == 'join' %}
+      <label>Room Code:</label>
+      <input type="text" name="code" value="{{ code }}" required />
+      {% else %}
+      <label>Room Code:</label>
+      <input
+        type="text"
+        name="code"
+        value="{{ code }}"
+        placeholder="Optional"
+      />
+      {% endif %}
     </div>
-    <div>
-        <label>How are you feeling?</label>
-        <select name="feeling">
-            <option value="Sad">Sad</option>
-            <option value="Angry">Angry</option>
-            <option value="Fear">Fear</option>
-            <option value="Envy">Envy</option>
-            <option value="Anxiety">Anxiety</option>
-            <option value="Bored">Bored</option>
-            <option value="Disgust">Disgust</option>
-            <option value="Embarrassment">Embarrassment</option>
-            <option value="Other">Other</option>
-        </select>
+    <br />
+    <!-- Field to input user's feeling. -->
+    <div class="input">
+      <label>How are you feeling?</label>
+      <select name="feeling" id="feeling-dropdown" onchange="showOther()">
+        <option value="Sad">Sad</option>
+        <option value="Angry">Angry</option>
+        <option value="Fear">Fear</option>
+        <option value="Envy">Envy</option>
+        <option value="Anxiety">Anxiety</option>
+        <option value="Bored">Bored</option>
+        <option value="Disgust">Disgust</option>
+        <option value="Embarrassment">Embarrassment</option>
+        <option value="Other">Other</option>
+      </select>
     </div>
-    <div>
-        <label>Enter the other feeling:</label>
-        <input type="text" name="additionalFeeling" placeholder="Optional">
+    <!-- If the user inputs "Other", they must input their other feeling. -->
+    <div style="display: none" id="other-feeling">
+      <br />
+      <label>Enter the other feeling:</label>
+      <input type="text" name="additionalFeeling" />
     </div>
-    <div>
-        <label>Experience:</label>
-        <select name="experience">
-            <option value="Under 1 year">Under 1 year</option>
-            <option value="1-5 years">1-5 years</option>
-            <option value="6-10 years">6-10 years</option>
-            <option value="11-15 years">11-15 years</option>
-            <option value="16 years and above">16 years and above</option>
-        </select>
+    <br />
+    <!-- Field to input their preferred level of experience from the other person. -->
+    <div class="input">
+      <label>Experience:</label>
+      <select name="experience">
+        <option value="Under 1 year">Under 1 year</option>
+        <option value="1-5 years">1-5 years</option>
+        <option value="6-10 years">6-10 years</option>
+        <option value="11-15 years">11-15 years</option>
+        <option value="16 years and above">16 years and above</option>
+      </select>
     </div>
-    <div>
-        <label>Language:</label>
-        <input type="text" name="language">
+    <br />
+    <!-- Field to input their preferred language. -->
+    <div class="input">
+      <label>Language:</label>
+      <input type="text" name="language" />
     </div>
-    <div>
-        <label>Vent Your Emotions:</label>
-        <textarea name="anything"></textarea>
+    <br />
+    <!-- Field to input more about their emotions. -->
+    <div class="input">
+      <label>Vent Your Emotions:</label>
+      <textarea name="anything"></textarea>
     </div>
+    <br />
+    <!-- Buttons to allow the user to join an existing room, or create a new chat room. -->
     <button type="submit" name="action" value="join">Join a room</button>
     <button type="submit" name="action" value="create">Create a room</button>
-</form>
-</div>
-
-<h3>Available Rooms</h3>
-{% if rooms %}
-    <ul>
+  </form>
+  <!-- The list of available rooms. -->
+  <h3>Available Rooms</h3>
+  {% if rooms %}
+  <ul>
     {% for room_code, room_info in rooms.items() %}
+    <li>
+      Room: {{ room_code }} (Members: {{ room_info.members|length }})
+
+      <ul>
+        {% for name, user_info in room_info.members.items() %}
         <li>
-            Room: {{ room_code }} 
-            (Members: {{ room_info.members|length }})
-           
-            <ul>
-            {% for name, user_info in room_info.members.items() %}
-                <li>
-                    {{ name }} (Experience: {{ user_info.experience }}, 
-                    Feeling: {{ user_info.feeling }}, 
-                    {% if user_info.additional_feeling %}
-                        Additional Feeling: {{ user_info.additional_feeling }},
-                    {% endif %}
-                    Languages: {{ user_info.language }},
-                    Vent Your Emotions: {{ user_info.anything }})
-                </li>
-            {% endfor %}
-            </ul>
+          {{ name }} (Experience: {{ user_info.experience }}, Feeling: {{
+          user_info.feeling }}, {% if user_info.additional_feeling %} Additional
+          Feeling: {{ user_info.additional_feeling }}, {% endif %} Languages: {{
+          user_info.language }}, Vent Your Emotions: {{ user_info.anything }})
         </li>
+        {% endfor %}
+      </ul>
+    </li>
     {% endfor %}
-    </ul>
-{% else %}
-    <p>No rooms available. Create a new room to get started!</p>
-{% endif %}
-{% endblock %}
+  </ul>
+  {% else %}
+  <p>No rooms available. Create a new room to get started!</p>
+  {% endif %} {% endblock %}
+</div>
