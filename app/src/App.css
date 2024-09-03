@@ -295,3 +295,37 @@ label {
   justify-content: center;
   gap: 40px;
 }
+
+.rec-page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.recs-title {
+  padding-top: 12vh;
+}
+
+.book-recs {
+  text-align: center;
+}
+
+.book-desc {
+  height: 25vh;
+  width: 50vw;
+  overflow: scroll;
+  text-align: center;
+}
+
+.video-recs {
+  text-align: center;
+}
+
+.ticketmaster-events {
+  text-align: center;
+}
+
+.predictHQ-events {
+  text-align: center;
+}
