@@ -1,10 +1,11 @@
 import sqlite3
 import bcrypt
 import secrets
-from flask import Blueprint, request, jsonify,session
+from flask import Blueprint, request, jsonify
 from database_setup import create_connection
 from flask_mail import Mail, Message 
 from datetime import datetime, timedelta
+from flask_cors import cross_origin
 
 auth = Blueprint('auth', __name__)
 
@@ -18,6 +19,7 @@ def verify_password(provided_password, stored_password_hash):
 
 # Registers a user
 @auth.route('/register_user', methods=['POST'])
+@cross_origin()
 def register_user():
     data = request.json
     required_fields = ['email', 'username', 'password']
@@ -51,6 +53,7 @@ def register_user():
 
 # Login user
 @auth.route('/login', methods=['POST'])
+@cross_origin()
 def login():
     data = request.json
     if not all(key in data for key in ['username', 'password']):
@@ -73,7 +76,7 @@ def login():
                 return initiate_2fa(user[0], user[1])
             
             # If the login is successful, return the user ID and username
-            session['username']=user[0]
+         
             return jsonify({
                 "message": "Login successful",
                 "user_id": user[0],
@@ -90,7 +93,7 @@ def login():
 #logout user
 @auth.route('/logout', methods=['POST'])
 def logout():
-    session.clear()
+    
     return jsonify({"message": "Logout Successful"}), 200
     
     

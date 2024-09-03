@@ -5,10 +5,42 @@ import { Link, useNavigate } from "react-router-dom";
 import { registeredUsers } from "./RegisteredUsers.js";
 
 function Login() {
+  // Function to handle the login
+  const navigate = useNavigate();
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Login registered successfully:', data.message);
+        console.log('User ID:', data.user_id);
+        navigate("Home");
+        
+      //  setRegisterMessage("Registration successful! You can now login.");
+      } else {
+        console.error('Login failed:', data.error);
+       // setRegisterMessage(data.error || "Registration failed. Please try again.");
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+     // setRegisterMessage("An error occurred. Please try again later.");
+    }
+  };
   {
     /* Initializing useNavigate object to allow for conditional navigation. */
   }
-  const navigate = useNavigate();
+
   {
     /* Remember me state variable that toggles status of Remember Me. */
   }
@@ -67,33 +99,33 @@ function Login() {
   {
     /* Makes sure that captcha is being done before the submit button is being clicked. If button isn't clicked, alert forced for logging in. */
   }
-  const canSubmit = () => {
-    const result = containsUserPassword(username, password);
-    if (!captchaSet) {
-      console.log("1");
-      alert("Complete the reCAPTCHA below before logging in.");
-    } else if (result[0] === false && result[1] === false) {
-      console.log("2");
-      alert("Please register");
-    } else if (result[0] === true && result[1] === false) {
-      console.log("3");
-      alert("Please go to forgot password");
-    } else if (result[0] === false && result[1] === true) {
-      console.log("4");
-      alert("Username isn't registered. Try again, please.");
-    } else {
-      if (rememberMe) {
-        localStorage.setItem("username", username);
-        localStorage.setItem("password", password);
-        console.log("User is remembered");
-      }
-      console.log("5");
-      setUsername(username);
-      setPassword(password);
-      console.log("Your details are", username, password);
-      navigate("Home");
-    }
-  };
+  // const canSubmit = () => {
+  //   const result = containsUserPassword(username, password);
+  //   if (!captchaSet) {
+  //     console.log("1");
+  //     alert("Complete the reCAPTCHA below before logging in.");
+  //   } else if (result[0] === false && result[1] === false) {
+  //     console.log("2");
+  //     alert("Please register");
+  //   } else if (result[0] === true && result[1] === false) {
+  //     console.log("3");
+  //     alert("Please go to forgot password");
+  //   } else if (result[0] === false && result[1] === true) {
+  //     console.log("4");
+  //     alert("Username isn't registered. Try again, please.");
+  //   } else {
+  //     if (rememberMe) {
+  //       localStorage.setItem("username", username);
+  //       localStorage.setItem("password", password);
+  //       console.log("User is remembered");
+  //     }
+  //     console.log("5");
+  //     setUsername(username);
+  //     setPassword(password);
+  //     console.log("Your details are", username, password);
+  //     navigate("Home");
+  //   }
+  // };
 
   const handleCheckboxChange = () => {
     setRememberMe(!rememberMe);
@@ -162,7 +194,7 @@ function Login() {
       />
       {/* Button for submitting and refreshing. */}
       <div id="buttons">
-        <button id="submitButton" type="submit" onClick={canSubmit}>
+        <button id="submitButton" type="submit" onClick={handleLogin}>
           Submit
         </button>
         <button
