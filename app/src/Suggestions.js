@@ -109,6 +109,13 @@ function Suggestions() {
                       <h4>{event.name}</h4>
                       <p>Start Time: {event.start_time}</p>
                       <p>Venue Location: {event.venue}</p>
+                      <a
+                        href={event.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Event
+                      </a>
                     </li>
                   )
                 )}
@@ -122,6 +129,13 @@ function Suggestions() {
                     <h4>{event.name}</h4>
                     <p>Start Time: {event.start_time}</p>
                     <p>Location: {event.location}</p>
+                    <a
+                      href={event.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Event
+                    </a>
                   </li>
                 ))}
             </ul>
