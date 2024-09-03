@@ -10,13 +10,13 @@ from flask_cors import CORS
 
 
 def create_app():
+
     app = Flask(__name__)
     CORS(app)
     load_dotenv()
     app.config["CORS_HEADERS"] = "Content-Type"
-    #app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-    
     # Configure email settings
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
@@ -31,7 +31,6 @@ def create_app():
     # Register blueprints
     app.register_blueprint(auth)
     app.register_blueprint(healthcare)
-    
     
     return app
 

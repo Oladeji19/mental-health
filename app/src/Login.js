@@ -1,11 +1,13 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Link, useNavigate } from "react-router-dom";
 import { registeredUsers } from "./RegisteredUsers.js";
+import { context } from "./App";
 
 function Login() {
   // Function to handle the login
+  const [username_, setUsername_] = useContext(context);
   const navigate = useNavigate();
   const handleLogin = async () => {
     try {
@@ -26,6 +28,7 @@ function Login() {
         console.log('Login registered successfully:', data.message);
         console.log('User ID:', data.user_id);
         navigate("Home");
+        setUsername_(username);
         
       //  setRegisterMessage("Registration successful! You can now login.");
       } else {

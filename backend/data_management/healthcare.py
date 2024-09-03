@@ -1,11 +1,13 @@
 import sqlite3
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from database_setup import create_connection
 from datetime import datetime, timedelta
+from flask_cors import cross_origin
 
 healthcare = Blueprint('healthcare', __name__)
 
 @healthcare.route('/set_goals', methods=['POST'])
+@cross_origin()
 def set_goals():
     conn = create_connection()
     c = conn.cursor()
@@ -47,6 +49,7 @@ def set_goals():
 
 # Check if the user has entered their daily health information
 @healthcare.route('/check_goals', methods=['POST'])
+@cross_origin()
 def check_goals():
     conn = create_connection()
     c = conn.cursor()
@@ -114,8 +117,10 @@ def check_goals():
     finally:
         conn.close()
 
-@healthcare.route('/check_for_availability', methods=['GET'])
+@healthcare.route('/check_for_availability', methods=['POST'])
+@cross_origin()
 def check_for_availability():
+    
     username = request.json.get('username')
     conn = create_connection()
     c = conn.cursor()

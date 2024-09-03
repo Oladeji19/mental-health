@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { context } from "./App";
+
 
 function Healthcare() {
   const [sleepGoals, setSleepGoals] = useState(null);
@@ -15,8 +17,14 @@ function Healthcare() {
   const [listOfLast7meditation, setlistOfLast7meditation] = useState([]);
   const [listOfLast7exercise, setlistOfLast7exercise] = useState([]);
 
+  const [username_, setUsername_] = useContext(context);
+
 useEffect(async() => {
-  const response = await fetch("http://localhost:5000/check_for_availability");
+  console.log(typeof username_)
+  const response = await fetch("http://localhost:5001/check_for_availability", 
+  {method:'POST', body: JSON.stringify(
+  {username: "madhav"}
+    )});
   if(response.json.can_enter_information === true){
     setshowEnter(false);
   }
@@ -38,12 +46,12 @@ useEffect(async() => {
       alert("All inputs must be greater than or equal to 0.");
     } else {
       try {
-        const response = await fetch("http://localhost:5000/set_goals", {
+        const response = await fetch("http://localhost:5001/set_goals", {
           body: JSON.stringify({
-
             sleep_goals: sleepGoals,
             exercise: exerciseGoals,
             meditation: meditationGoals,
+            username: username_,
           }),
         });
         const status = response.json.message;
@@ -61,11 +69,12 @@ useEffect(async() => {
       alert("All inputs must be greater than or equal to 0.");
     } else {
       try {
-        const response = await fetch("http://localhost:5000/check_goals", {
+        const response = await fetch("http://localhost:5001/check_goals", {
           body: JSON.stringify({
             sleep: sleepMemo,
             exercise: exerciseGoals,
             meditation: meditationGoals,
+            username: username_,
           }),
         });
         const status = response.json.message;
