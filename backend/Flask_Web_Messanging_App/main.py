@@ -79,12 +79,16 @@ def message(data):
         "name": session.get("name"),
         "message": data["data"]
     }
+
+    #send the message to the room
     send(content, to=room)
     rooms[room]["messages"].append(content)
     print(f"{session.get('name')} said: {data['data']}")
 
 @socketio.on('connect')
 def connect(auth):
+
+ 
     room = session.get("room")
     name = session.get("name")
     if not room or not name:
@@ -93,6 +97,7 @@ def connect(auth):
         leave_room(room)
         return
     
+    #join the room. method from room
     join_room(room)
     send({"name": name, "message": "has entered the chat room"}, to=room)
     emit('update_members', rooms[room]["members"], to=room)

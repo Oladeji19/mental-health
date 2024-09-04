@@ -54,6 +54,7 @@ socketio.on("message", (data) => {
 //send message
 const sendMessage = () => {
     const message = document.getElementById("message");
+    console.log(message.value);
     if (message.value == "") return;
 
     //emit message event
@@ -63,7 +64,8 @@ const sendMessage = () => {
 
 //update member list
 const updateMemberList = (members) => {
-    memberList.innerHTML = ''; // Clear current list
+    const memberList = document.getElementById("member-list");
+    memberList.innerHTML = "";
     for (const [name, userInfo] of Object.entries(members)) {
         const li = document.createElement('li');
         li.textContent = `${name} (Experience: ${userInfo.experience}, Feeling: ${userInfo.feeling}, ${userInfo.additional_feeling ? 'Additional Feeling: ' + userInfo.additional_feeling + ', ' : ''}Languages: ${userInfo.language}, Vent Your Emotions: ${userInfo.anything})`;
