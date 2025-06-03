@@ -5,6 +5,7 @@ Project Description:
 This open-source mental health web application is a collaborative project designed to promote emotional wellness and self-care through a suite of interactive and personalized tools. Built by a team of students, the platform is focused on accessibility, privacy, and user empowerment.
 
 🌟 Features
+
 • 📓 Digital Journaling: A secure space for users to log their thoughts, emotions, and experiences.
 
 • 💬 Venting Chat Room: A mindfulness-focused anonymous chat feature for users to express themselves in a safe, nonjudgmental environment.
@@ -22,6 +23,7 @@ This open-source mental health web application is a collaborative project design
 • 🤝 Open Collaboration: Contributions are welcome! We follow open-source best practices, and our goal is to create an inclusive, impactful tool for mental wellness.
 
 🚀 Tech Stack
+
 • Frontend: HTML, CSS, JavaScript, React (or similar)
 
 • Backend: Node.js / Express or Python / Django
