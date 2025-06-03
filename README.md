@@ -1,4 +1,5 @@
 Project Description:
+
 🧠 Mental Health Web Application
 
 This open-source mental health web application is a collaborative project designed to promote emotional wellness and self-care through a suite of interactive and personalized tools. Built by a team of students, the platform is focused on accessibility, privacy, and user empowerment.
